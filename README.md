@@ -1,6 +1,6 @@
-# Simple Nginx File Upload App
+# Nginx File Upload App
 
-This example shows a Flask upload app behind Nginx with shared upload storage.
+Flask upload app behind Nginx with shared upload storage.
 
 ## Features
 
@@ -24,13 +24,6 @@ Access:
 ## Upload folder
 
 `./uploads` is used by both containers. Nginx serves static files directly from `/var/www/uploads`.
-
-## Extend
-
-- Add auth in Flask
-- Limit file size and types (already 100MB + safe types)
-- Use HTTPS with certbot + proxy
-
 
 Run command
 with Gunicorn: gunicorn -w 2 wsgi:app
