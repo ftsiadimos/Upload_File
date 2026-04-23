@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload Files</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Upload Files</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="upload-form" method="post" action="{{ url_for('upload.upload_file') }}" enctype="multipart/form-data">
+      <input type="file" name="file" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <div class="files">
+      <h2>Uploaded Files</h2>
+      {% if files %}
+        <table>
+          <thead>
+            <tr>
+              <th>File name</th>
+              <th style="width: 120px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in files %}
+              <tr>
+                <td><a href="{{ url_for('upload.uploaded_file', filename=f) }}" target="_blank" rel="noopener">{{ f }}</a></td>
+                <td>
+                  <form method="post" action="{{ url_for('upload.delete_file', filename=f) }}" style="margin:0; display:inline;">
+                    <button class="delete-btn" type="submit" onclick="return confirm('Delete {{ f }}?')">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-message">No files yet. Upload a file to get started.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
