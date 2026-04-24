@@ -12,8 +12,13 @@ upload_bp = Blueprint("upload", __name__)
 
 @upload_bp.route("/", methods=["GET"])
 def index():
+    search_query = request.args.get("q", "").strip()
     files = list_uploaded_files(Config.UPLOAD_FOLDER)
-    return render_template("upload.html", files=files)
+
+    if search_query:
+        files = [f for f in files if search_query.lower() in f.lower()]
+
+    return render_template("upload.html", files=files, search_query=search_query)
 
 
 @upload_bp.route("/upload", methods=["POST"])

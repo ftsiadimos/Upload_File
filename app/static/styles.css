@@ -21,6 +21,14 @@ h1 { margin-top: 0; }
 .upload-form button { border: 0; background: var(--accent); color: #fff; border-radius: 6px; padding: 10px 16px; cursor: pointer; font-weight: 600; }
 .upload-form button:hover { background: #145a8e; }
 
+.search-form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
+.search-form input[type="text"] { flex: 1 1 240px; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+.search-form button { border: 0; background: #4b78a0; color: #fff; border-radius: 6px; padding: 10px 16px; cursor: pointer; font-weight: 600; }
+.search-form button:hover { background: #3a5e7e; }
+.clear-search { color: var(--accent); text-decoration: none; font-weight: 600; padding: 10px 0; }
+.clear-search:hover { text-decoration: underline; }
+.search-info { margin: 0 0 10px; color: var(--muted); }
+
 table { width: 100%; border-collapse: collapse; margin-top: 14px; }
 th, td { padding: 12px 10px; border: 1px solid var(--border); text-align: left; }
 th { background: #eff3f8; color: #445c76; }

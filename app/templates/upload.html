@@ -25,9 +25,20 @@
       <button type="submit">Upload</button>
     </form>
 
+    <form class="search-form" method="get" action="{{ url_for('upload.index') }}">
+      <input type="text" name="q" placeholder="Search uploaded files..." value="{{ search_query | default('') }}" />
+      <button type="submit">Search</button>
+      {% if search_query %}
+        <a class="clear-search" href="{{ url_for('upload.index') }}">Clear</a>
+      {% endif %}
+    </form>
+
     <div class="files">
       <h2>Uploaded Files</h2>
       {% if files %}
+        {% if search_query %}
+          <p class="search-info">Showing {{ files|length }} file(s) matching "{{ search_query }}".</p>
+        {% endif %}
         <table>
           <thead>
             <tr>
@@ -49,7 +60,7 @@
           </tbody>
         </table>
       {% else %}
-        <p class="empty-message">No files yet. Upload a file to get started.</p>
+        <p class="empty-message">{% if search_query %}No files found for "{{ search_query }}".{% else %}No files yet. Upload a file to get started.{% endif %}</p>
       {% endif %}
     </div>
   </div>
