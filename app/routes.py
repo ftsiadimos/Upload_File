@@ -5,20 +5,51 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fro
 from werkzeug.utils import secure_filename
 
 from .config import Config
-from .utils import allowed_file, get_file_path, list_uploaded_files
+from .utils import allowed_file, get_file_path, list_uploaded_files, load_custom_categories, save_custom_categories
 
 upload_bp = Blueprint("upload", __name__)
+
+
+def _group_files_by_category(files, all_categories):
+    grouped = {category: [] for category in all_categories}
+    grouped["Uncategorized"] = []
+
+    for file_path in files:
+        first_part = file_path.split("/", 1)[0]
+        if first_part in all_categories:
+            grouped[first_part].append(file_path)
+        else:
+            grouped["Uncategorized"].append(file_path)
+
+    return grouped
 
 
 @upload_bp.route("/", methods=["GET"])
 def index():
     search_query = request.args.get("q", "").strip()
+    selected_category = request.args.get("category", "All")
     files = list_uploaded_files(Config.UPLOAD_FOLDER)
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    all_categories = Config.CATEGORIES + [c for c in custom_categories if c not in Config.CATEGORIES]
 
     if search_query:
         files = [f for f in files if search_query.lower() in f.lower()]
 
-    return render_template("upload.html", files=files, search_query=search_query)
+    grouped_files = _group_files_by_category(files, all_categories)
+
+    if selected_category != "All":
+        grouped_files = {
+            selected_category: grouped_files.get(selected_category, [])
+        }
+
+    return render_template(
+        "upload.html",
+        grouped_files=grouped_files,
+        categories=["All"] + all_categories + ["Uncategorized"],
+        custom_categories=custom_categories,
+        selected_category=selected_category,
+        search_query=search_query,
+    )
 
 
 @upload_bp.route("/upload", methods=["POST"])
@@ -36,22 +67,38 @@ def upload_file():
         flash(f"Disallowed file type: {file.filename}")
         return redirect(url_for("upload.index"))
 
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    all_categories = Config.CATEGORIES + [c for c in custom_categories if c not in Config.CATEGORIES]
+    category = request.form.get("category", "Others")
+    if category not in all_categories:
+        category = "Others"
+
     filename = secure_filename(file.filename)
-    file_path = get_file_path(Config.UPLOAD_FOLDER, filename)
+    category_folder = get_file_path(Config.UPLOAD_FOLDER, category)
+    category_folder.mkdir(parents=True, exist_ok=True)
+
+    file_path = get_file_path(Config.UPLOAD_FOLDER, category, filename)
     file.save(file_path)
 
-    flash(f"File uploaded successfully: {filename}")
+    flash(f"File uploaded successfully: {category}/{filename}")
     return redirect(url_for("upload.index"))
+
+
+def _safe_file_path(filename: str) -> str:
+    normalized = Path(filename).as_posix().lstrip("./")
+    safe_parts = [secure_filename(part) for part in normalized.split("/") if part]
+    return "/".join(safe_parts)
 
 
 @upload_bp.route("/uploads/<path:filename>")
 def uploaded_file(filename):
-    return send_from_directory(Config.UPLOAD_FOLDER, filename)
+    safe_filename = _safe_file_path(filename)
+    return send_from_directory(Config.UPLOAD_FOLDER, safe_filename)
 
 
 @upload_bp.route("/delete/<path:filename>", methods=["POST"])
 def delete_file(filename):
-    safe_name = secure_filename(filename)
+    safe_name = _safe_file_path(filename)
     file_path = get_file_path(Config.UPLOAD_FOLDER, safe_name)
 
     if not file_path.exists():
@@ -71,6 +118,59 @@ def delete_file(filename):
 def files_total():
     total = len(list_uploaded_files(Config.UPLOAD_FOLDER))
     return {"total": total}
+
+
+@upload_bp.route("/category/add", methods=["POST"])
+def add_category():
+    name = request.form.get("name", "").strip()
+    if not name:
+        flash("Category name cannot be empty.")
+        return redirect(url_for("upload.index"))
+
+    safe_name = secure_filename(name)
+    if not safe_name or safe_name.lower() in ("all", "uncategorized"):
+        flash("Invalid or reserved category name.")
+        return redirect(url_for("upload.index"))
+
+    if safe_name in Config.CATEGORIES:
+        flash(f"'{safe_name}' is already a built-in category.")
+        return redirect(url_for("upload.index"))
+
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    if safe_name in custom_categories:
+        flash(f"Category already exists: {safe_name}")
+        return redirect(url_for("upload.index"))
+
+    custom_categories.append(safe_name)
+    save_custom_categories(Config.UPLOAD_FOLDER, custom_categories)
+    flash(f"Category added: {safe_name}")
+    return redirect(url_for("upload.index"))
+
+
+@upload_bp.route("/category/delete/<name>", methods=["POST"])
+def delete_category(name):
+    safe_name = secure_filename(name)
+    if safe_name in Config.CATEGORIES:
+        flash(f"Cannot delete built-in category: {safe_name}")
+        return redirect(url_for("upload.index"))
+
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    if safe_name not in custom_categories:
+        flash(f"Category not found: {safe_name}")
+        return redirect(url_for("upload.index"))
+
+    category_folder = get_file_path(Config.UPLOAD_FOLDER, safe_name)
+    if category_folder.exists() and any(category_folder.iterdir()):
+        flash(f"Cannot delete '{safe_name}': it still contains files.")
+        return redirect(url_for("upload.index"))
+
+    custom_categories.remove(safe_name)
+    save_custom_categories(Config.UPLOAD_FOLDER, custom_categories)
+    if category_folder.exists():
+        category_folder.rmdir()
+
+    flash(f"Category deleted: {safe_name}")
+    return redirect(url_for("upload.index"))
 
 
 @upload_bp.app_errorhandler(413)

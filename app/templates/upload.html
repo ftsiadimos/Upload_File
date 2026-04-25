@@ -3,66 +3,152 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Upload Files</title>
+  <title>File Manager</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
-  <div class="container">
-    <h1>Upload Files</h1>
+
+  <header class="topbar">
+    <span class="topbar-icon">&#128193;</span>
+    <h1>File Manager</h1>
+  </header>
+
+  <div class="page">
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <div class="flash">
+        <div class="flash-list">
           {% for msg in messages %}
-            <p>{{ msg }}</p>
+            <div class="flash-msg">{{ msg }}</div>
           {% endfor %}
         </div>
       {% endif %}
     {% endwith %}
 
-    <form class="upload-form" method="post" action="{{ url_for('upload.upload_file') }}" enctype="multipart/form-data">
-      <input type="file" name="file" required />
-      <button type="submit">Upload</button>
-    </form>
+    <div class="action-row">
 
-    <form class="search-form" method="get" action="{{ url_for('upload.index') }}">
-      <input type="text" name="q" placeholder="Search uploaded files..." value="{{ search_query | default('') }}" />
-      <button type="submit">Search</button>
-      {% if search_query %}
-        <a class="clear-search" href="{{ url_for('upload.index') }}">Clear</a>
-      {% endif %}
-    </form>
+      <!-- Upload -->
+      <div class="card">
+        <p class="card-title">Upload a file</p>
+        <form class="upload-form" method="post" action="{{ url_for('upload.upload_file') }}" enctype="multipart/form-data">
+          <div class="file-row">
+            <input type="file" name="file" required />
+          </div>
+          <div class="file-row">
+            <select name="category" required style="flex:1 1 0;">
+              {% for category in categories if category not in ['All', 'Uncategorized'] %}
+                <option value="{{ category }}">{{ category }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-primary" type="submit">&#8593; Upload</button>
+          </div>
+        </form>
+      </div>
 
-    <div class="files">
-      <h2>Uploaded Files</h2>
-      {% if files %}
-        {% if search_query %}
-          <p class="search-info">Showing {{ files|length }} file(s) matching "{{ search_query }}".</p>
-        {% endif %}
-        <table>
-          <thead>
-            <tr>
-              <th>File name</th>
-              <th style="width: 120px;">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for f in files %}
-              <tr>
-                <td><a href="{{ url_for('upload.uploaded_file', filename=f) }}" target="_blank" rel="noopener">{{ f }}</a></td>
-                <td>
-                  <form method="post" action="{{ url_for('upload.delete_file', filename=f) }}" style="margin:0; display:inline;">
-                    <button class="delete-btn" type="submit" onclick="return confirm('Delete {{ f }}?')">Delete</button>
+      <!-- Categories -->
+      <div class="card">
+        <p class="card-title">Manage categories</p>
+        <div class="category-manage">
+          <form class="category-add-form" method="post" action="{{ url_for('upload.add_category') }}">
+            <input type="text" name="name" placeholder="New category name..." required maxlength="64" />
+            <button class="btn btn-success" type="submit">+ Add</button>
+          </form>
+          {% if custom_categories %}
+            <div class="category-tags">
+              <span class="category-tags-label">Custom:</span>
+              {% for cat in custom_categories %}
+                <span class="category-tag">
+                  {{ cat }}
+                  <form method="post" action="{{ url_for('upload.delete_category', name=cat) }}" style="display:inline;">
+                    <button class="category-tag-delete" type="submit" title="Remove {{ cat }}" onclick="return confirm('Delete category \'{{ cat }}\'?')">&#xd7;</button>
                   </form>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p class="empty-message">{% if search_query %}No files found for "{{ search_query }}".{% else %}No files yet. Upload a file to get started.{% endif %}</p>
+                </span>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p style="margin:0; font-size:.85rem; color:var(--muted);">No custom categories yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div><!-- /.action-row -->
+
+    <!-- Files section -->
+    <div class="card">
+
+      <div class="files-header">
+        <h2>Uploaded Files</h2>
+        {% set ns = namespace(total=0) %}
+        {% for category, items in grouped_files.items() %}
+          {% set ns.total = ns.total + items|length %}
+        {% endfor %}
+        {% if ns.total > 0 %}
+          <span class="files-count">{{ ns.total }} file{{ 's' if ns.total != 1 }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Filter bar -->
+      <form class="filter-bar" method="get" action="{{ url_for('upload.index') }}" style="margin: 14px 0 18px;">
+        <input type="text" name="q" placeholder="Search files..." value="{{ search_query | default('') }}" />
+        <select name="category">
+          {% for category in categories %}
+            <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+          {% endfor %}
+        </select>
+        <button class="btn btn-secondary" type="submit">Filter</button>
+        {% if search_query or selected_category != 'All' %}
+          <a class="clear-search" href="{{ url_for('upload.index') }}">&#x2715; Clear</a>
+        {% endif %}
+      </form>
+
+      {% if search_query %}
+        <p class="search-info">{{ ns.total }} result{{ 's' if ns.total != 1 }} for &ldquo;{{ search_query }}&rdquo;</p>
       {% endif %}
-    </div>
-  </div>
+
+      {% if ns.total == 0 %}
+        <p class="empty-message">
+          {% if search_query %}No files match &ldquo;{{ search_query }}&rdquo;.{% else %}No files yet &mdash; upload one above.{% endif %}
+        </p>
+      {% else %}
+        {% for category, items in grouped_files.items() %}
+          {% if items %}
+            <div class="category-group">
+              <div class="category-group-header">
+                <h3>{{ category }}</h3>
+                <span class="category-count">{{ items|length }}</span>
+                {% if category in custom_categories %}
+                  <form method="post" action="{{ url_for('upload.delete_category', name=category) }}" style="display:inline; margin-left:auto;">
+                    <button class="category-delete-inline" type="submit" title="Delete category" onclick="return confirm('Delete category \'{{ category }}\'? It must be empty first.')">&#xd7; Delete</button>
+                  </form>
+                {% endif %}
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>File name</th>
+                    <th style="width:110px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for f in items %}
+                    <tr>
+                      <td><a href="{{ url_for('upload.uploaded_file', filename=f) }}" target="_blank" rel="noopener">{{ f.split('/')[-1] }}</a></td>
+                      <td>
+                        <form method="post" action="{{ url_for('upload.delete_file', filename=f) }}" style="margin:0;">
+                          <button class="delete-btn" type="submit" onclick="return confirm('Delete {{ f.split('/')[-1] }}?')">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </div><!-- /.card files -->
+
+  </div><!-- /.page -->
 </body>
 </html>

@@ -12,10 +12,20 @@ ALLOWED_EXTENSIONS = {
     "gz", "bz2", "xz", "iso", "dmg", "exe", "msi", "apk", "ipa"
 }
 
+CATEGORIES = [
+    "Documents",
+    "Images",
+    "Audio",
+    "Video",
+    "Archives",
+    "Others",
+]
+
 
 class Config:
     SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "replace-this-with-a-secure-key")
     UPLOAD_FOLDER = str(UPLOAD_FOLDER)
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MB
     ALLOWED_EXTENSIONS = ALLOWED_EXTENSIONS
+    CATEGORIES = CATEGORIES
 
