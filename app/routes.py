@@ -32,6 +32,9 @@ def index():
     custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
     all_categories = Config.CATEGORIES + [c for c in custom_categories if c not in Config.CATEGORIES]
 
+    # sidebar always shows unfiltered counts
+    sidebar_grouped = _group_files_by_category(files, all_categories)
+
     if search_query:
         files = [f for f in files if search_query.lower() in f.lower()]
 
@@ -45,6 +48,7 @@ def index():
     return render_template(
         "upload.html",
         grouped_files=grouped_files,
+        sidebar_grouped=sidebar_grouped,
         categories=["All"] + all_categories + ["Uncategorized"],
         custom_categories=custom_categories,
         selected_category=selected_category,
