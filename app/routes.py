@@ -9,6 +9,8 @@ from .utils import allowed_file, get_file_path, list_uploaded_files, load_custom
 
 upload_bp = Blueprint("upload", __name__)
 
+VERSION_FILE = Path(__file__).resolve().parents[1] / "VERSION"
+
 
 def _group_files_by_category(files, all_categories):
     grouped = {category: [] for category in all_categories}
@@ -45,6 +47,8 @@ def index():
             selected_category: grouped_files.get(selected_category, [])
         }
 
+    version = VERSION_FILE.read_text(encoding="utf-8").strip() if VERSION_FILE.exists() else "unknown"
+
     return render_template(
         "upload.html",
         grouped_files=grouped_files,
@@ -53,6 +57,7 @@ def index():
         custom_categories=custom_categories,
         selected_category=selected_category,
         search_query=search_query,
+        app_version=version,
     )
 
 
