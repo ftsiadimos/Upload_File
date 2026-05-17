@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nginx File Upload App</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1220;
+      --surface: rgba(15, 23, 42, 0.88);
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7c3aed;
+      --accent-soft: rgba(124, 58, 237, 0.18);
+      --button: #8b5cf6;
+      --button-hover: #7c3aed;
+      --code-bg: rgba(148, 163, 184, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, rgba(124, 58, 237, 0.26), transparent 24%),
+                  radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 28%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .page {
+      display: grid;
+      place-items: center;
+      padding: 48px 20px;
+    }
+
+    .panel {
+      width: min(100%, 940px);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.82));
+      border: 1px solid var(--surface-border);
+      border-radius: 28px;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 42px 40px 32px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(56, 189, 248, 0.16));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.4rem, 3.4vw, 3.6rem);
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 22px;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #ede9fe;
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    .content {
+      padding: 34px 40px 40px;
+      display: grid;
+      gap: 28px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: #f8fafc;
+      font-size: 1.35rem;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.35rem;
+      color: var(--text);
+      list-style: disc;
+      display: grid;
+      gap: 10px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: var(--code-bg);
+      overflow-x: auto;
+      color: #f8fafc;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.97rem;
+    }
+
+    code {
+      padding: 0.18rem 0.35rem;
+      border-radius: 0.55rem;
+      background: rgba(148, 163, 184, 0.16);
+      color: #e2e8f0;
+      font-size: 0.98rem;
+    }
+
+    .highlight {
+      display: inline-flex;
+      gap: 0.35rem;
+      align-items: center;
+      color: #d8b4fe;
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 22px 40px 34px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    @media (max-width: 700px) {
+      .hero, .content, .footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero {
+        padding-top: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <article class="panel">
+      <section class="hero">
+        <span class="badge">Upload File</span>
+        <h1>Nginx File Upload App</h1>
+        <p>Modern Flask + Nginx upload app documentation.</p>
+        <p style="margin-top: 20px; color: #cbd5e1;">
+          <a href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener noreferrer" style="color: #a78bfa; text-decoration: none; font-weight: 600;">View source on GitHub</a>
+        </p>
+      </section>
+
+      <section class="content">
+        <div>
+          <h2>Features</h2>
+          <ul>
+            <li>File upload form at <code>/upload</code></li>
+            <li>Uploads served via <code>/uploads/&lt;filename&gt;</code></li>
+            <li>Nginx reverse proxy with static upload storage</li>
+            <li>Docker Compose ready for local development</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2>Quick Start</h2>
+          <p>Run the app from the project root with Docker Compose:</p>
+          <pre>docker compose up --build</pre>
+          <p>Then visit <strong class="highlight">http://localhost:9999</strong> in your browser.</p>
+        </div>
+
+        <div>
+          <h2>Storage</h2>
+          <p>The application stores uploads in <code>./uploads</code>. Nginx exposes these files from <code>/var/www/uploads</code> so uploaded content is served efficiently.</p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        File Upload App.
+      </footer>
+    </article>
+  </div>
+</body>
+</html>
