@@ -105,6 +105,12 @@ def uploaded_file(filename):
     return send_from_directory(Config.UPLOAD_FOLDER, safe_filename)
 
 
+@upload_bp.route("/download/<path:filename>")
+def download_file(filename):
+    safe_filename = _safe_file_path(filename)
+    return send_from_directory(Config.UPLOAD_FOLDER, safe_filename, as_attachment=True)
+
+
 @upload_bp.route("/delete/<path:filename>", methods=["POST"])
 def delete_file(filename):
     safe_name = _safe_file_path(filename)
