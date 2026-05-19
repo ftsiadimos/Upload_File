@@ -167,14 +167,16 @@ body {
 }
 .btn {
   border: none;
-  border-radius: 8px;
-  padding: 9px 18px;
-  font-size: .9rem;
-  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 100px;
+  font-size: .92rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background .15s;
+  transition: background .15s, transform .15s;
   white-space: nowrap;
 }
+.btn:hover { transform: translateY(-1px); }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent-dk); }
 .btn-success { background: var(--success); color: #fff; }
@@ -302,9 +304,9 @@ tr:hover td { background: #f8fafc; }
 td a { color: var(--accent); text-decoration: none; font-size: .92rem; }
 td a:hover { text-decoration: underline; }
 
-..file-actions {
+.file-actions {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   align-items: center;
 }
@@ -315,31 +317,39 @@ td a:hover { text-decoration: underline; }
   border: 1px solid var(--accent);
   background: #eff6ff;
   color: var(--accent);
-  border-radius: 6px;
-  padding: 5px 12px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 104px;
   cursor: pointer;
-  font-size: .82rem;
-  font-weight: 600;
+  font-size: .88rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: background .12s, border-color .12s;
+  transition: background .12s, border-color .12s, transform .15s;
+  line-height: 1.2;
 }
 .download-btn:hover {
   background: #dbeafe;
   border-color: #93c5fd;
+  transform: translateY(-1px);
 }
 
 .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #fca5a5;
   background: #fff5f5;
   color: var(--danger);
-  border-radius: 6px;
-  padding: 5px 12px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 104px;
   cursor: pointer;
-  font-size: .82rem;
-  font-weight: 600;
-  transition: background .12s;
+  font-size: .88rem;
+  font-weight: 700;
+  transition: background .12s, transform .15s;
+  line-height: 1.2;
 }
-.delete-btn:hover { background: var(--danger-lt); border-color: var(--danger); }
+.delete-btn:hover { background: var(--danger-lt); border-color: var(--danger); transform: translateY(-1px); }
 
 .category-delete-inline {
   border: 1px solid #fca5a5;
