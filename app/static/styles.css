@@ -371,30 +371,24 @@ td a:hover { text-decoration: underline; }
   font-size: .95rem;
 }
 
-/* ── Footer ─────────────────────────────────────────────── */
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  padding: 10px 16px;
-  background: var(--panel);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
-  z-index: 100;
+/* ── Version badge in the top bar ───────────────────────── */
+.topbar-version {
+  font-size: .95rem;
+  color: rgba(255,255,255,.88);
+  font-weight: 600;
+  white-space: nowrap;
 }
-.footer-btn {
+.topbar-btn {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  background: #24292f;
+  gap: 8px;
+  background: rgba(255,255,255,.15);
   color: #fff;
-  border-radius: 8px;
-  padding: 7px 18px;
-  font-size: .85rem;
-  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 16px;
   text-decoration: none;
+  font-size: .9rem;
+  font-weight: 600;
   transition: background .15s;
 }
-.footer-btn:hover { background: #3d444d; }
