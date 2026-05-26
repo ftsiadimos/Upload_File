@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
@@ -10,15 +11,20 @@ def allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in Config.ALLOWED_EXTENSIONS
 
 
-def list_uploaded_files(upload_folder: str) -> List[str]:
-    files: List[str] = []
+def list_uploaded_files(upload_folder: str) -> List[dict]:
+    files: List[dict] = []
     for root, _, filenames in os.walk(upload_folder):
         for filename in filenames:
             if filename.startswith("."):
                 continue
-            relative_path = Path(root).relative_to(upload_folder) / filename
-            files.append(str(relative_path).replace("\\", "/"))
-    return sorted(files)
+            file_path = Path(root) / filename
+            relative_path = file_path.relative_to(upload_folder).as_posix()
+            modified_time = datetime.fromtimestamp(file_path.stat().st_mtime)
+            files.append({
+                "path": relative_path,
+                "date": modified_time.strftime("%Y-%m-%d %H:%M"),
+            })
+    return sorted(files, key=lambda entry: entry["path"])
 
 
 def get_file_path(upload_folder: str, *path_segments: str) -> Path:

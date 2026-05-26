@@ -16,12 +16,13 @@ def _group_files_by_category(files, all_categories):
     grouped = {category: [] for category in all_categories}
     grouped["Uncategorized"] = []
 
-    for file_path in files:
+    for file_entry in files:
+        file_path = file_entry["path"]
         first_part = file_path.split("/", 1)[0]
         if first_part in all_categories:
-            grouped[first_part].append(file_path)
+            grouped[first_part].append(file_entry)
         else:
-            grouped["Uncategorized"].append(file_path)
+            grouped["Uncategorized"].append(file_entry)
 
     return grouped
 
@@ -38,7 +39,7 @@ def index():
     sidebar_grouped = _group_files_by_category(files, all_categories)
 
     if search_query:
-        files = [f for f in files if search_query.lower() in f.lower()]
+        files = [f for f in files if search_query.lower() in f["path"].lower()]
 
     grouped_files = _group_files_by_category(files, all_categories)
 

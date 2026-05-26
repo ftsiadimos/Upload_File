@@ -286,7 +286,7 @@ body {
   font-weight: 700;
 }
 
-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+table { width: 100%; border-collapse: collapse; margin-top: 6px; table-layout: fixed; }
 th {
   background: #f1f5f9;
   color: var(--muted);
@@ -298,10 +298,16 @@ th {
   border-bottom: 1px solid var(--border);
   text-align: left;
 }
+th:nth-child(2), td:nth-child(2) { width: 240px; }
+th:nth-child(3), td:nth-child(3) {
+  width: 180px;
+  white-space: nowrap;
+}
+
 td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #f8fafc; }
-td a { color: var(--accent); text-decoration: none; font-size: .92rem; }
+td a { color: var(--accent); text-decoration: none; font-size: .92rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 td a:hover { text-decoration: underline; }
 
 .file-actions {

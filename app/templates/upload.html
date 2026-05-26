@@ -157,21 +157,23 @@
                 <thead>
                   <tr>
                     <th>File name</th>
-                    <th style="width:190px;">Action</th>
+                    <th style="width:290px;">Action</th>
+                    <th>Uploaded</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for f in items %}
                     <tr>
-                      <td><a href="{{ url_for('upload.uploaded_file', filename=f) }}" target="_blank" rel="noopener">{{ f.split('/')[-1] }}</a></td>
+                      <td><a href="{{ url_for('upload.uploaded_file', filename=f.path) }}" target="_blank" rel="noopener">{{ f.path.split('/')[-1] }}</a></td>
                       <td>
                         <div class="file-actions">
-                          <a class="download-btn" href="{{ url_for('upload.download_file', filename=f) }}" download="{{ f.split('/')[-1] }}">Download</a>
-                          <form method="post" action="{{ url_for('upload.delete_file', filename=f) }}" style="margin:0;">
-                            <button class="delete-btn" type="submit" onclick="return confirm('Delete {{ f.split('/')[-1] }}?')">Delete</button>
+                          <a class="download-btn" href="{{ url_for('upload.download_file', filename=f.path) }}" download="{{ f.path.split('/')[-1] }}">Download</a>
+                          <form method="post" action="{{ url_for('upload.delete_file', filename=f.path) }}" style="margin:0;">
+                            <button class="delete-btn" type="submit" onclick="return confirm('Delete {{ f.path.split('/')[-1] }}?')">Delete</button>
                           </form>
                         </div>
                       </td>
+                      <td>{{ f.date }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
