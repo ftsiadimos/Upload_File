@@ -255,6 +255,49 @@ body {
 }
 .flash-msg.error { background: var(--danger-lt); color: var(--danger); border-color: #fecaca; }
 
+.error-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.error-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  max-width: 660px;
+  width: 100%;
+  padding: 36px 30px;
+  text-align: center;
+}
+
+.error-code {
+  margin: 0;
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.error-card h1 {
+  font-size: 2rem;
+  margin: 18px 0 10px;
+  color: var(--text);
+}
+
+.error-message {
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.error-card .btn-primary {
+  min-width: auto;
+}
+
 /* ── Files section ──────────────────────────────────────── */
 .files-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .files-header h2 { margin: 0; font-size: 1.05rem; }

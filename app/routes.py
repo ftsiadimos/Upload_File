@@ -189,43 +189,35 @@ def delete_category(name):
     return redirect(url_for("upload.index"))
 
 
-@upload_bp.app_errorhandler(413)
-def request_entity_too_large(error):
-    flash("File is too large. Maximum size is 100 MB.")
-    return redirect(url_for("upload.index"))
+def render_error_page(code, title, message):
+    return render_template("error.html", code=code, title=title, message=message), code
 
 
-@upload_bp.app_errorhandler(404)
-def page_not_found(error):
-    flash("Page not found.")
-    return redirect(url_for("upload.index"))
+def register_error_handlers(app):
+    @app.errorhandler(400)
+    def bad_request(error):
+        return render_error_page(400, "Bad Request", "The request could not be understood by the server.")
 
+    @app.errorhandler(403)
+    def forbidden(error):
+        return render_error_page(403, "Forbidden", "You don't have permission to access this resource.")
 
-@upload_bp.app_errorhandler(500)
-def internal_server_error(error):
-    flash("An internal server error occurred.")
-    return redirect(url_for("upload.index"))
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_error_page(404, "Page Not Found", "The page you were looking for doesn't exist.")
 
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return render_error_page(405, "Method Not Allowed", "The requested method is not allowed for this URL.")
 
-@upload_bp.app_errorhandler(400)
-def bad_request(error):
-    flash("Bad request.")
-    return redirect(url_for("upload.index"))
+    @app.errorhandler(408)
+    def request_timeout(error):
+        return render_error_page(408, "Request Timeout", "The request took too long to complete.")
 
+    @app.errorhandler(413)
+    def request_entity_too_large(error):
+        return render_error_page(413, "Payload Too Large", "The uploaded file is too large. Maximum size is 100 MB.")
 
-@upload_bp.app_errorhandler(403)
-def forbidden(error):
-    flash("Forbidden.")
-    return redirect(url_for("upload.index"))
-
-
-@upload_bp.app_errorhandler(405)
-def method_not_allowed(error):
-    flash("Method not allowed.")
-    return redirect(url_for("upload.index"))
-
-
-@upload_bp.app_errorhandler(408)
-def request_timeout(error):
-    flash("Request timeout.")
-    return redirect(url_for("upload.index"))
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        return render_error_page(500, "Server Error", "An internal server error occurred. Please try again later.")
