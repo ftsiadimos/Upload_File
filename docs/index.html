@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nginx File Upload App</title>
+  <title>Upload File App Documentation</title>
   <style>
     :root {
       color-scheme: light;
       --bg: #edf2f7;
-      --surface: rgba(255, 255, 255, 0.94);
+      --surface: rgba(255, 255, 255, 0.96);
       --surface-border: rgba(148, 163, 184, 0.24);
       --text: #0f172a;
       --muted: #475569;
-      --accent: #60a5fa;
+      --accent: #2563eb;
       --accent-soft: rgba(96, 165, 250, 0.18);
-      --button: #38bdf8;
-      --button-hover: #0ea5e9;
       --code-bg: rgba(148, 163, 184, 0.14);
     }
 
@@ -41,7 +39,7 @@
     }
 
     .panel {
-      width: min(100%, 940px);
+      width: min(100%, 960px);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96));
       border: 1px solid var(--surface-border);
       border-radius: 28px;
@@ -51,7 +49,7 @@
 
     .hero {
       padding: 42px 40px 32px;
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(56, 189, 248, 0.10));
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.18), rgba(37, 99, 235, 0.08));
       border-bottom: 1px solid rgba(148, 163, 184, 0.18);
     }
 
@@ -158,9 +156,8 @@
   <div class="page">
     <article class="panel">
       <section class="hero">
-        <span class="badge">Upload File</span>
-        <h1>Nginx File Upload App</h1>
-        <p>Modern Flask + Nginx upload app documentation.</p>
+        <h1>Upload File App</h1>
+        <p>A lightweight Flask app with Nginx-based upload serving, Docker Compose support, and a polished file manager interface.</p>
         <p style="margin-top: 20px; color: var(--muted);">
           <a href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">View source on GitHub</a>
         </p>
@@ -168,29 +165,51 @@
 
       <section class="content">
         <div>
+          <h2>Overview</h2>
+          <p>This repository provides a simple upload manager built with Flask, backed by a shared <code>uploads/</code> directory, and optionally fronted by Nginx for static file delivery.</p>
+        </div>
+
+        <div>
           <h2>Features</h2>
           <ul>
-            <li>File upload form at <code>/upload</code></li>
-            <li>Uploads served via <code>/uploads/&lt;filename&gt;</code></li>
-            <li>Nginx reverse proxy with static upload storage</li>
-            <li>Docker Compose ready for local development</li>
+            <li>Upload files from the browser with category support.</li>
+            <li>Download and delete files using safe, sanitized paths.</li>
+            <li>Serve uploaded files through Nginx for performance.</li>
+            <li>Custom categories stored persistently in the upload folder.</li>
+            <li>Graceful error pages for common HTTP failures.</li>
           </ul>
         </div>
 
         <div>
-          <h2>Quick Start</h2>
-          <p>Run the app from the project root with Docker Compose:</p>
+          <h2>Quick start</h2>
+          <p>Run the application using Docker Compose from the project root.</p>
           <pre>docker compose up --build</pre>
-          <p>Then visit <strong class="highlight">http://localhost:9999</strong> in your browser.</p>
+          <p>Visit <strong class="highlight">http://localhost:9999</strong> once it is running.</p>
         </div>
 
         <div>
-          <h2>Storage</h2>
-          <p>The application stores uploads in <code>./uploads</code>. Nginx exposes these files from <code>/var/www/uploads</code> so uploaded content is served efficiently.</p>
+          <h2>Important routes</h2>
+          <ul>
+            <li><code>/</code> — main file manager UI</li>
+            <li><code>/upload</code> — file upload POST endpoint</li>
+            <li><code>/uploads/&lt;path&gt;</code> — serve upload files</li>
+            <li><code>/download/&lt;path&gt;</code> — download files as attachments</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2>Deployment notes</h2>
+          <ul>
+            <li>Set <code>FLASK_SECRET_KEY</code> in production.</li>
+            <li>Ensure the <code>uploads/</code> directory is writeable by the container.</li>
+            <li>Use Nginx to serve static upload content instead of proxying it through Flask.</li>
+          </ul>
         </div>
       </section>
+
       <footer class="footer">
-        &copy; 2026 Nginx File Upload App. Created by Fotis Tsiadimos.
+        &copy; 2026 Upload File App.
+      </footer>
     </article>
   </div>
 </body>
