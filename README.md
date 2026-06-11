@@ -12,6 +12,8 @@ This application provides a user-friendly interface for uploading files with the
 - Nginx reverse proxy for production-grade performance
 - Shared upload storage between containers
 
+<img src="mis/image.png" alt="UploadFile screenshot" style="border: 4px solid #444; padding: 4px;" />
+
 ## Features
 
 | Feature                     | Description                                                                                     |
