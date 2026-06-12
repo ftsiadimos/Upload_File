@@ -112,6 +112,40 @@ def download_file(filename):
     return send_from_directory(Config.UPLOAD_FOLDER, safe_filename, as_attachment=True)
 
 
+@upload_bp.route("/change-category/<path:filename>", methods=["POST"])
+def change_category(filename):
+    safe_name = _safe_file_path(filename)
+    file_path = get_file_path(Config.UPLOAD_FOLDER, safe_name)
+
+    if not file_path.exists():
+        flash(f"File not found: {safe_name}")
+        return redirect(url_for("upload.index"))
+
+    new_category = request.form.get("category", "").strip()
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    all_categories = Config.CATEGORIES + [c for c in custom_categories if c not in Config.CATEGORIES]
+
+    if not new_category or new_category not in all_categories:
+        flash("Invalid category selected.")
+        return redirect(url_for("upload.index"))
+
+    # Get the original file name (last part of the path)
+    original_filename = Path(safe_name).name
+    new_path = get_file_path(Config.UPLOAD_FOLDER, new_category, original_filename)
+
+    try:
+        if new_path.exists():
+            flash(f"A file with the same name already exists in '{new_category}'.")
+            return redirect(url_for("upload.index"))
+
+        file_path.rename(new_path)
+        flash(f"Moved to '{new_category}': {original_filename}")
+    except Exception as e:
+        flash(f"Error moving file: {e}")
+
+    return redirect(url_for("upload.index"))
+
+
 @upload_bp.route("/delete/<path:filename>", methods=["POST"])
 def delete_file(filename):
     safe_name = _safe_file_path(filename)
