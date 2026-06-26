@@ -133,6 +133,9 @@ def change_category(filename):
     original_filename = Path(safe_name).name
     new_path = get_file_path(Config.UPLOAD_FOLDER, new_category, original_filename)
 
+    # Ensure the destination category folder exists
+    new_path.parent.mkdir(parents=True, exist_ok=True)
+
     try:
         if new_path.exists():
             flash(f"A file with the same name already exists in '{new_category}'.")

@@ -46,7 +46,15 @@
             </li>
             {% for category, items in sidebar_grouped.items() %}
               <li class="{% if selected_category == category %}active{% endif %}">
-                <a href="{{ url_for('upload.index', category=category) }}">{{ category }} <span class="sidebar-count">{{ items|length }}</span></a>
+                <a href="{{ url_for('upload.index', category=category) }}">
+                  {{ category }}
+                  <span class="sidebar-count">{{ items|length }}</span>
+                  {% if category in custom_categories %}
+                    <form method="post" action="{{ url_for('upload.delete_category', name=category) }}" class="sidebar-delete-form" onclick="event.stopPropagation();" onsubmit="return confirm('Delete category \'{{ category }}\'? It must be empty first.')">
+                      <button class="sidebar-delete-btn" type="submit" title="Delete {{ category }}">&#xd7;</button>
+                    </form>
+                  {% endif %}
+                </a>
               </li>
             {% endfor %}
           </ul>
