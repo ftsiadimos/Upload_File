@@ -48,6 +48,14 @@ Before you begin, ensure you have the following installed:
    docker-compose up --build
    ```
 
+## Docker Image
+
+A pre-built Docker image is available on GitHub Container Registry (GHCR):
+
+```bash
+docker pull ghcr.io/ftsiadimos/upload_file:latest
+```
+
 ## Configuration
 
 ### Environment Variables
