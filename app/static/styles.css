@@ -269,8 +269,24 @@ body {
   background: #f0fdf4;
   color: #15803d;
   border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .flash-msg.error { background: var(--danger-lt); color: var(--danger); border-color: #fecaca; }
+.flash-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: opacity .15s;
+}
+.flash-close:hover { opacity: 0.7; }
 
 .error-page {
   min-height: calc(100vh - 120px);

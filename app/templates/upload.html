@@ -24,7 +24,10 @@
       {% if messages %}
         <div class="flash-list">
           {% for msg in messages %}
-            <div class="flash-msg">{{ msg }}</div>
+            <div class="flash-msg">
+              <span>{{ msg }}</span>
+              <button class="flash-close" aria-label="Close message">&#xd7;</button>
+            </div>
           {% endfor %}
         </div>
       {% endif %}
@@ -207,5 +210,23 @@
 
   </div><!-- /.page -->
 
+<script>
+  document.querySelectorAll('.flash-close').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const flashMsg = this.closest('.flash-msg');
+      flashMsg.style.animation = 'fadeOut .3s ease-out';
+      setTimeout(() => flashMsg.remove(), 300);
+    });
+  });
+</script>
+
+<style>
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+</style>
 </body>
 </html>
