@@ -12,6 +12,12 @@ upload_bp = Blueprint("upload", __name__)
 VERSION_FILE = Path(__file__).resolve().parents[1] / "VERSION"
 
 
+@upload_bp.route("/about", methods=["GET"])
+def about():
+    version = VERSION_FILE.read_text(encoding="utf-8").strip() if VERSION_FILE.exists() else "unknown"
+    return render_template("about.html", app_version=version)
+
+
 def _group_files_by_category(files, all_categories):
     grouped = {category: [] for category in all_categories}
     grouped["Uncategorized"] = []
@@ -98,6 +104,63 @@ def _safe_file_path(filename: str) -> str:
     normalized = Path(filename).as_posix().lstrip("./")
     safe_parts = [secure_filename(part) for part in normalized.split("/") if part]
     return "/".join(safe_parts)
+
+
+@upload_bp.route("/upload_folder", methods=["POST"])
+def upload_folder():
+    if "folder_files" not in request.files:
+        flash("No folder selected")
+        return redirect(url_for("upload.index"))
+
+    files = request.files.getlist("folder_files")
+    if not files or all(f.filename == "" for f in files):
+        flash("No files in folder")
+        return redirect(url_for("upload.index"))
+
+    custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
+    all_categories = Config.CATEGORIES + [c for c in custom_categories if c not in Config.CATEGORIES]
+    category = request.form.get("category", "Others")
+    if category not in all_categories:
+        category = "Others"
+
+    category_folder = get_file_path(Config.UPLOAD_FOLDER, category)
+    category_folder.mkdir(parents=True, exist_ok=True)
+
+    # Create a temporary directory to reconstruct folder structure
+    import tempfile
+    import zipfile
+
+    temp_dir = tempfile.mkdtemp(prefix="folder_upload_")
+    try:
+        for file in files:
+            if not file.filename:
+                continue
+            # The filename contains the relative path within the folder
+            safe_filename = _safe_file_path(file.filename)
+            if not safe_filename:
+                continue
+            dest_path = Path(temp_dir) / safe_filename
+            dest_path.parent.mkdir(parents=True, exist_ok=True)
+            file.save(dest_path)
+
+        # Create ZIP archive
+        zip_filename = secure_filename(f"{category}_folder.zip")
+        zip_path = category_folder / zip_filename
+
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            for root, _, filenames in os.walk(temp_dir):
+                for fname in filenames:
+                    file_path = Path(root) / fname
+                    arcname = str(file_path.relative_to(temp_dir))
+                    zf.write(file_path, arcname)
+
+        flash(f"Folder uploaded successfully: {category}/{zip_filename}")
+    finally:
+        # Clean up temp directory
+        import shutil
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+    return redirect(url_for("upload.index"))
 
 
 @upload_bp.route("/uploads/<path:filename>")

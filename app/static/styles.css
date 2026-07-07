@@ -248,6 +248,129 @@ body {
   padding: 9px 14px;
   font-size: .9rem;
 }
+
+/* ── About page ─────────────────────────────────────────── */
+.about-page { max-width: 960px; }
+
+.about-hero {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 48px 40px;
+  text-align: center;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-md);
+}
+.about-hero h2 { font-size: 2.2rem; margin: 0 0 8px; letter-spacing: -.5px; }
+.about-subtitle { font-size: 1.05rem; opacity: .9; margin: 0 0 24px; }
+.about-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.about-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: .92rem;
+  font-weight: 600;
+  transition: background .15s;
+}
+.about-link-btn:hover { background: rgba(255,255,255,.30); }
+
+.about-section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.about-section h3 { font-size: 1.15rem; margin: 0 0 18px; color: var(--text); }
+
+.about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .about-cards { grid-template-columns: 1fr; } }
+
+.about-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--bg);
+}
+.about-card h4 { margin: 8px 0 6px; font-size: 1rem; }
+.about-card p { font-size: .88rem; color: var(--muted); margin: 0 0 12px; }
+.about-card-icon { font-size: 2rem; }
+
+.about-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.about-tag {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--accent-dk);
+}
+
+.about-features { display: flex; flex-direction: column; gap: 4px; }
+.about-feature-item { font-size: .85rem; color: var(--text); }
+
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+.about-feature-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--bg);
+}
+.about-feature-card strong { display: block; margin-bottom: 4px; font-size: .95rem; }
+.about-feature-card p { font-size: .84rem; color: var(--muted); margin: 0; }
+.about-feature-icon { font-size: 1.3rem; }
+
+.about-tech { display: flex; flex-direction: column; gap: 10px; }
+.about-tech-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.about-tech-label { font-size: .88rem; color: var(--muted); font-weight: 600; }
+.about-tech-value { font-size: .88rem; font-weight: 600; }
+
+.about-code-block { margin-bottom: 16px; }
+.about-code-header {
+  background: #1e293b;
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: .78rem;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.about-code-block pre {
+  margin: 0;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 0 0 10px 10px;
+  overflow-x: auto;
+  font-size: .85rem;
+  line-height: 1.6;
+}
+.about-code-block pre code { font-family: "Fira Code", "Cascadia Code", Consolas, monospace; }
+
+.about-section-last p { font-size: .92rem; color: var(--muted); margin: 0 0 8px; }
+.about-section-last a { color: var(--accent); }
+.about-author { font-size: .88rem; color: var(--muted); margin-top: 12px; }
+
+.clear-search { color: var(--accent); text-decoration: none; font-size: .88rem; font-weight: 600; }
+.clear-search:hover { text-decoration: underline; }
 .filter-bar input[type="text"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
 .filter-bar select {
   border: 1px solid var(--border);

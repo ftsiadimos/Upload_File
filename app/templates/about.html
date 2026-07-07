@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — File Manager</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="topbar-icon">&#128193;</span>
+    <h1><a href="{{ url_for('upload.index') }}" style="text-decoration:none; color:inherit;">File Manager</a></h1>
+    <a class="topbar-btn" href="{{ url_for('upload.index') }}">
+      &#8962; Home
+    </a>
+
+    <span class="topbar-version">v{{ app_version }}</span>
+  </header>
+
+  <div class="page about-page">
+
+    <!-- Hero -->
+    <div class="about-hero">
+      <div class="about-hero-inner">
+        <h2>File Manager</h2>
+        <p class="about-subtitle">A robust file upload system built with Flask, designed for secure and efficient file handling.</p>
+        <div class="about-links">
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+            Repository
+          </a>
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File/issues" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path fill-rule="evenodd" d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0z"/></svg>
+            Issues
+          </a>
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File/pulls" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.576.673A.75.75 0 0 1 10.06 1l-3.4 3.4a.75.75 0 0 1-1.06-1.06l1.577-1.57Zm-2.28 3.926a.75.75 0 0 1 1.06 0l3.4 3.4a.75.75 0 0 1-1.06 1.06L6.756 9.11l1.577 1.577a.75.75 0 0 1-1.06 1.06l-3.4-3.4a.75.75 0 0 1 0-1.06l1.577-1.577-1.577-1.577a.75.75 0 0 1 0-1.06Zm6.06 6.06a.75.75 0 0 1 0 1.06l-3.4 3.4a.75.75 0 0 1-1.06-1.06l1.577-1.577-1.577-1.577a.75.75 0 0 1 1.06-1.06l3.4 3.4Z"/></svg>
+            Pull Requests
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Support -->
+    <div class="about-section">
+      <h3>&#128193; Upload Support</h3>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-card-icon">&#128196;</div>
+          <h4>File Upload</h4>
+          <p>Upload individual files with extension validation. Supported types include documents, images, audio, video, archives, and code files.</p>
+          <div class="about-tags">
+            <span class="about-tag">PDF</span>
+            <span class="about-tag">DOCX</span>
+            <span class="about-tag">XLSX</span>
+            <span class="about-tag">PNG</span>
+            <span class="about-tag">JPG</span>
+            <span class="about-tag">GIF</span>
+            <span class="about-tag">ZIP</span>
+            <span class="about-tag">MP4</span>
+            <span class="about-tag">MKV</span>
+            <span class="about-tag">MP3</span>
+            <span class="about-tag">PY</span>
+            <span class="about-tag">JS</span>
+            <span class="about-tag">JSON</span>
+            <span class="about-tag">HTML</span>
+            <span class="about-tag">+ more</span>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">&#128194;</div>
+          <h4>Folder Upload</h4>
+          <p>Select an entire folder from your local machine. All files and subdirectories are preserved and compressed into a ZIP archive for upload.</p>
+          <div class="about-features">
+            <div class="about-feature-item">&#10003; Preserves directory structure</div>
+            <div class="about-feature-item">&#10003; Automatic ZIP compression</div>
+            <div class="about-feature-item">&#10003; Multi-file selection</div>
+            <div class="about-feature-item">&#10003; Category assignment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="about-section">
+      <h3>&#9889; Features</h3>
+      <div class="about-grid">
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128269;</span>
+          <strong>Category Management</strong>
+          <p>Organize files into predefined or custom categories. Filter and search across all uploads.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128201;</span>
+          <strong>File Management</strong>
+          <p>Download, delete, or move files between categories directly from the file listing.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128271;</span>
+          <strong>Security</strong>
+          <p>Extension validation, secure filename handling, and configurable max file size limits.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128230;</span>
+          <strong>Search & Filter</strong>
+          <p>Search files by name and filter by category with an intuitive interface.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128640;</span>
+          <strong>Docker Support</strong>
+          <p>Complete containerized deployment with Docker Compose, Nginx reverse proxy, and Gunicorn.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#127912;</span>
+          <strong>Responsive Design</strong>
+          <p>Clean, modern UI that works on desktop and mobile devices.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="about-section">
+      <h3>&#128736;&#65039; Tech Stack</h3>
+      <div class="about-tech">
+        <div class="about-tech-item">
+          <span class="about-tech-label">Backend</span>
+          <span class="about-tech-value">Flask (Python)</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Frontend</span>
+          <span class="about-tech-value">HTML, CSS</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Reverse Proxy</span>
+          <span class="about-tech-value">Nginx</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">WSGI Server</span>
+          <span class="about-tech-value">Gunicorn</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Containerization</span>
+          <span class="about-tech-value">Docker / Docker Compose</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Registry</span>
+          <span class="about-tech-value">GitHub Container Registry (GHCR)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="about-section">
+      <h3>&#128218; Quick Start</h3>
+      <div class="about-code-block">
+        <div class="about-code-header">Docker Compose</div>
+        <pre><code># Build and start the containers
+docker-compose up --build
+
+# Access the application
+# http://localhost:9999</code></pre>
+      </div>
+      <div class="about-code-block">
+        <div class="about-code-header">Local Development</div>
+        <pre><code># Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+export FLASK_APP=wsgi.py
+flask run</code></pre>
+      </div>
+    </div>
+
+    <!-- License -->
+    <div class="about-section about-section-last">
+      <h3>&#9427; License</h3>
+      <p>This project is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.</p>
+      <p class="about-author">Created by <a href="https://github.com/ftsiadimos" target="_blank" rel="noopener">@ftsiadimos</a></p>
+    </div>
+
+  </div>
+</body>
+</html>
