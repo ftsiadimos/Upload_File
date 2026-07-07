@@ -1,216 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload File App Documentation</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload File — Documentation</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #edf2f7;
-      --surface: rgba(255, 255, 255, 0.96);
-      --surface-border: rgba(148, 163, 184, 0.24);
-      --text: #0f172a;
-      --muted: #475569;
-      --accent: #2563eb;
-      --accent-soft: rgba(96, 165, 250, 0.18);
-      --code-bg: rgba(148, 163, 184, 0.14);
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-dk: #2563eb;
+      --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.10);
+      --radius: 14px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 22%),
-                  radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.14), transparent 26%),
-                  var(--bg);
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      margin: 0; padding: 0;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
-    .page {
-      display: grid;
-      place-items: center;
-      padding: 48px 20px;
+    .topbar {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
     }
-
-    .panel {
-      width: min(100%, 960px);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96));
-      border: 1px solid var(--surface-border);
-      border-radius: 28px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
-      overflow: hidden;
-    }
-
-    .hero {
-      padding: 42px 40px 32px;
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.18), rgba(37, 99, 235, 0.08));
-      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-    }
-
-    .hero h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2.4rem, 3.4vw, 3.6rem);
-      letter-spacing: -0.04em;
-      line-height: 1.02;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    .badge {
+    .topbar h1 { margin: 0; font-size: 1.4rem; font-weight: 700; letter-spacing: -.3px; }
+    .topbar-icon { font-size: 1.4rem; }
+    .topbar-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-top: 22px;
-      padding: 0.8rem 1rem;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
+      gap: 8px;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-size: .9rem;
       font-weight: 600;
-      width: fit-content;
+      transition: background .15s;
+    }
+    .topbar-btn:hover { background: rgba(255,255,255,.24); }
+
+    .page { max-width: 960px; margin: 28px auto; padding: 0 16px 48px; }
+
+    .about-hero {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      text-align: center;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-md);
+    }
+    .about-hero h2 { font-size: 2.2rem; margin: 0 0 8px; letter-spacing: -.5px; }
+    .about-subtitle { font-size: 1.05rem; opacity: .9; margin: 0 0 24px; }
+    .about-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .about-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.18);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .about-link-btn:hover { background: rgba(255,255,255,.30); }
+
+    .about-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .about-section h3 { font-size: 1.15rem; margin: 0 0 18px; color: var(--text); }
+
+    .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .about-cards { grid-template-columns: 1fr; } }
+
+    .about-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--bg);
+    }
+    .about-card h4 { margin: 8px 0 6px; font-size: 1rem; }
+    .about-card p { font-size: .88rem; color: var(--muted); margin: 0 0 12px; }
+    .about-card-icon { font-size: 2rem; }
+
+    .about-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .about-tag {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--accent-dk);
     }
 
-    .content {
-      padding: 34px 40px 40px;
-      display: grid;
-      gap: 28px;
-    }
+    .about-features { display: flex; flex-direction: column; gap: 4px; }
+    .about-feature-item { font-size: .85rem; color: var(--text); }
 
-    h2 {
-      margin: 0 0 16px;
-      color: var(--text);
-      font-size: 1.35rem;
-    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
 
-    p {
-      margin: 0 0 20px;
-      color: var(--muted);
+    .about-feature-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      background: var(--bg);
     }
+    .about-feature-card strong { display: block; margin-bottom: 4px; font-size: .95rem; }
+    .about-feature-card p { font-size: .84rem; color: var(--muted); margin: 0; }
+    .about-feature-icon { font-size: 1.3rem; }
 
-    ul {
+    .about-tech { display: flex; flex-direction: column; gap: 10px; }
+    .about-tech-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .about-tech-label { font-size: .88rem; color: var(--muted); font-weight: 600; }
+    .about-tech-value { font-size: .88rem; font-weight: 600; }
+
+    .about-code-block { margin-bottom: 16px; }
+    .about-code-header {
+      background: #1e293b;
+      color: #94a3b8;
+      padding: 8px 16px;
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 10px 10px 0 0;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .about-code-block pre {
       margin: 0;
-      padding-left: 1.35rem;
-      color: var(--text);
-      list-style: disc;
-      display: grid;
-      gap: 10px;
-    }
-
-    pre {
-      margin: 0;
-      padding: 18px 22px;
-      border-radius: 18px;
-      background: var(--code-bg);
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 0 0 10px 10px;
       overflow-x: auto;
-      color: #000000;
-      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.97rem;
+      font-size: .85rem;
+      line-height: 1.6;
     }
+    .about-code-block pre code { font-family: "Fira Code", "Cascadia Code", Consolas, monospace; }
 
-    code {
-      padding: 0.18rem 0.35rem;
-      border-radius: 0.55rem;
-      background: rgba(148, 163, 184, 0.16);
-      color: #000000;
-      font-size: 0.98rem;
-    }
+    .about-section-last p { font-size: .92rem; color: var(--muted); margin: 0 0 8px; }
+    .about-section-last a { color: var(--accent); }
+    .about-author { font-size: .88rem; color: var(--muted); margin-top: 12px; }
 
-    .highlight {
-      display: inline-flex;
-      gap: 0.35rem;
+    .about-routes { display: grid; gap: 8px; }
+    .about-route-item {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      color: var(--accent);
-      font-weight: 600;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
     }
-
-    .footer {
-      padding: 22px 40px 34px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--muted);
-      font-size: 0.96rem;
-    }
-
-    @media (max-width: 700px) {
-      .hero, .content, .footer {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-
-      .hero {
-        padding-top: 32px;
-      }
-    }
+    .about-route-path { font-family: "Fira Code", "Cascadia Code", Consolas, monospace; font-size: .88rem; font-weight: 600; color: var(--accent-dk); }
+    .about-route-desc { font-size: .88rem; color: var(--muted); }
   </style>
 </head>
 <body>
+
   <div class="page">
-    <article class="panel">
-      <section class="hero">
-        <h1>Upload File App</h1>
-        <p>A lightweight Flask app with Nginx-based upload serving, Docker Compose support, and a polished file manager interface.</p>
-        <p style="margin-top: 20px; color: var(--muted);">
-          <a href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">View source on GitHub</a>
-        </p>
-      </section>
 
-      <section class="content">
-        <div>
-          <h2>Overview</h2>
-          <p>This repository provides a simple upload manager built with Flask, backed by a shared <code>uploads/</code> directory, and optionally fronted by Nginx for static file delivery.</p>
+    <!-- Hero -->
+    <div class="about-hero">
+      <div class="about-hero-inner">
+        <h2>Upload File</h2>
+        <p class="about-subtitle">A robust file upload system built with Flask, designed for secure and efficient file handling.</p>
+        <div class="about-links">
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+            Repository
+          </a>
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File/issues" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path fill-rule="evenodd" d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0z"/></svg>
+            Issues
+          </a>
+          <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File/pulls" target="_blank" rel="noopener">
+            <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path fill-rule="evenodd" d="M7.177 3.073L9.576.673A.75.75 0 0 1 10.06 1l-3.4 3.4a.75.75 0 0 1-1.06-1.06l1.577-1.57Zm-2.28 3.926a.75.75 0 0 1 1.06 0l3.4 3.4a.75.75 0 0 1-1.06 1.06L6.756 9.11l1.577 1.577a.75.75 0 0 1-1.06 1.06l-3.4-3.4a.75.75 0 0 1 0-1.06l1.577-1.577-1.577-1.577a.75.75 0 0 1 1.06-1.06l3.4 3.4Z"/></svg>
+            Pull Requests
+          </a>
         </div>
+      </div>
+    </div>
 
-        <div>
-          <h2>Features</h2>
-          <ul>
-            <li>Upload files from the browser with category support.</li>
-            <li>Download and delete files using safe, sanitized paths.</li>
-            <li>Serve uploaded files through Nginx for performance.</li>
-            <li>Custom categories stored persistently in the upload folder.</li>
-            <li>Graceful error pages for common HTTP failures.</li>
-          </ul>
+    <!-- Upload Support -->
+    <div class="about-section">
+      <h3>&#128193; Upload Support</h3>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-card-icon">&#128196;</div>
+          <h4>File Upload</h4>
+          <p>Upload individual files with extension validation. Supported types include documents, images, audio, video, archives, and code files.</p>
+          <div class="about-tags">
+            <span class="about-tag">PDF</span>
+            <span class="about-tag">DOCX</span>
+            <span class="about-tag">XLSX</span>
+            <span class="about-tag">PNG</span>
+            <span class="about-tag">JPG</span>
+            <span class="about-tag">GIF</span>
+            <span class="about-tag">ZIP</span>
+            <span class="about-tag">MP4</span>
+            <span class="about-tag">MKV</span>
+            <span class="about-tag">MP3</span>
+            <span class="about-tag">PY</span>
+            <span class="about-tag">JS</span>
+            <span class="about-tag">JSON</span>
+            <span class="about-tag">HTML</span>
+            <span class="about-tag">+ more</span>
+          </div>
         </div>
-
-        <div>
-          <h2>Quick start</h2>
-          <p>Run the application using Docker Compose from the project root.</p>
-          <pre>docker compose up --build</pre>
-          <p>Visit <strong class="highlight">http://localhost:9999</strong> once it is running.</p>
+        <div class="about-card">
+          <div class="about-card-icon">&#128194;</div>
+          <h4>Folder Upload</h4>
+          <p>Select an entire folder from your local machine. All files and subdirectories are preserved and compressed into a ZIP archive for upload.</p>
+          <div class="about-features">
+            <div class="about-feature-item">&#10003; Preserves directory structure</div>
+            <div class="about-feature-item">&#10003; Automatic ZIP compression</div>
+            <div class="about-feature-item">&#10003; Multi-file selection</div>
+            <div class="about-feature-item">&#10003; Category assignment</div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div>
-          <h2>Important routes</h2>
-          <ul>
-            <li><code>/</code> — main file manager UI</li>
-            <li><code>/upload</code> — file upload POST endpoint</li>
-            <li><code>/uploads/&lt;path&gt;</code> — serve upload files</li>
-            <li><code>/download/&lt;path&gt;</code> — download files as attachments</li>
-          </ul>
+    <!-- Features -->
+    <div class="about-section">
+      <h3>&#9889; Features</h3>
+      <div class="about-grid">
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128269;</span>
+          <strong>Category Management</strong>
+          <p>Organize files into predefined or custom categories. Filter and search across all uploads.</p>
         </div>
-
-        <div>
-          <h2>Deployment notes</h2>
-          <ul>
-            <li>Set <code>FLASK_SECRET_KEY</code> in production.</li>
-            <li>Ensure the <code>uploads/</code> directory is writeable by the container.</li>
-            <li>Use Nginx to serve static upload content instead of proxying it through Flask.</li>
-          </ul>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128201;</span>
+          <strong>File Management</strong>
+          <p>Download, delete, or move files between categories directly from the file listing.</p>
         </div>
-      </section>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128271;</span>
+          <strong>Security</strong>
+          <p>Extension validation, secure filename handling, and configurable max file size limits.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128230;</span>
+          <strong>Search & Filter</strong>
+          <p>Search files by name and filter by category with an intuitive interface.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#128640;</span>
+          <strong>Docker Support</strong>
+          <p>Complete containerized deployment with Docker Compose, Nginx reverse proxy, and Gunicorn.</p>
+        </div>
+        <div class="about-feature-card">
+          <span class="about-feature-icon">&#127912;</span>
+          <strong>Responsive Design</strong>
+          <p>Clean, modern UI that works on desktop and mobile devices.</p>
+        </div>
+      </div>
+    </div>
 
-      <footer class="footer">
-        &copy; 2026 Upload File App.
-      </footer>
-    </article>
+    <!-- Tech Stack -->
+    <div class="about-section">
+      <h3>&#128736;&#65039; Tech Stack</h3>
+      <div class="about-tech">
+        <div class="about-tech-item">
+          <span class="about-tech-label">Backend</span>
+          <span class="about-tech-value">Flask (Python)</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Frontend</span>
+          <span class="about-tech-value">HTML, CSS</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Reverse Proxy</span>
+          <span class="about-tech-value">Nginx</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">WSGI Server</span>
+          <span class="about-tech-value">Gunicorn</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Containerization</span>
+          <span class="about-tech-value">Docker / Docker Compose</span>
+        </div>
+        <div class="about-tech-item">
+          <span class="about-tech-label">Registry</span>
+          <span class="about-tech-value">GitHub Container Registry (GHCR)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Routes -->
+    <div class="about-section">
+      <h3>&#128203; Routes</h3>
+      <div class="about-routes">
+        <div class="about-route-item">
+          <span class="about-route-path">/</span>
+          <span class="about-route-desc">Main file manager UI</span>
+        </div>
+        <div class="about-route-item">
+          <span class="about-route-path">/upload</span>
+          <span class="about-route-desc">File upload POST endpoint</span>
+        </div>
+        <div class="about-route-item">
+          <span class="about-route-path">/upload_folder</span>
+          <span class="about-route-desc">Folder upload POST endpoint</span>
+        </div>
+        <div class="about-route-item">
+          <span class="about-route-path">/about</span>
+          <span class="about-route-desc">About page</span>
+        </div>
+        <div class="about-route-item">
+          <span class="about-route-path">/uploads/&lt;path&gt;</span>
+          <span class="about-route-desc">Serve uploaded files</span>
+        </div>
+        <div class="about-route-item">
+          <span class="about-route-path">/download/&lt;path&gt;</span>
+          <span class="about-route-desc">Download files as attachments</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="about-section">
+      <h3>&#128218; Quick Start</h3>
+      <div class="about-code-block">
+        <div class="about-code-header">Docker Compose</div>
+        <pre><code># Build and start the containers
+docker-compose up --build
+
+# Access the application
+# http://localhost:9999</code></pre>
+      </div>
+      <div class="about-code-block">
+        <div class="about-code-header">Local Development</div>
+        <pre><code># Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+export FLASK_APP=main.py
+flask run</code></pre>
+      </div>
+    </div>
+
+    <!-- License -->
+    <div class="about-section about-section-last">
+      <h3>&#9427; License</h3>
+      <p>This project is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.</p>
+      <p class="about-author">Created by <a href="https://github.com/ftsiadimos" target="_blank" rel="noopener">@ftsiadimos</a></p>
+    </div>
+
   </div>
 </body>
 </html>
