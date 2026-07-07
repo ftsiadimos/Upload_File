@@ -64,7 +64,7 @@ Configure the application using environment variables in your `.env` file:
 
 ```env
 # Flask Configuration
-FLASK_APP=wsgi.py
+FLASK_APP=main.py
 FLASK_ENV=development
 
 # Allowed file extensions
@@ -103,13 +103,13 @@ After starting the containers:
 
 2. Run the application:
    ```bash
-   export FLASK_APP=wsgi.py
+   export FLASK_APP=main.py
    flask run
    ```
 
 3. For production, use Gunicorn:
    ```bash
-   gunicorn -w 2 wsgi:app
+   gunicorn -w 2 main:app
    ```
 
 ## Allowed File Extensions
