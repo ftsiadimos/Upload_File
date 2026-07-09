@@ -166,5 +166,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions or support, please contact:
 
-- Email: your-email@example.com
 - GitHub Issues: [Open an issue](https://github.com/your-repo/upload-file/issues)
