@@ -63,6 +63,16 @@
               </li>
             {% endfor %}
           </ul>
+
+          <!-- Storage info -->
+          <div class="storage-info">
+            <p class="storage-label">Storage</p>
+            <div class="storage-bar">
+              <div class="storage-bar-fill" style="width: {{ disk_usage.percent }}%;"></div>
+            </div>
+            <span class="storage-text">{{ format_bytes(disk_usage.used) }} used of {{ format_bytes(disk_usage.total) }} ({{ disk_usage.percent }}%)</span>
+            <span class="storage-text storage-free">{{ format_bytes(disk_usage.free) }} free</span>
+          </div>
         </nav>
       </aside>
 

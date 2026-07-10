@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import List
@@ -45,3 +46,27 @@ def save_custom_categories(upload_folder: str, categories: List[str]) -> None:
     path = Path(upload_folder) / ".categories.json"
     with open(path, "w") as f:
         json.dump(categories, f)
+
+
+def get_disk_usage(upload_folder: str) -> dict:
+    """Return disk usage info for the partition containing upload_folder."""
+    usage = shutil.disk_usage(upload_folder)
+    total = usage.total
+    used = usage.used
+    free = usage.free
+    percent = (used / total * 100) if total else 0
+    return {
+        "total": total,
+        "used": used,
+        "free": free,
+        "percent": round(percent, 1),
+    }
+
+
+def format_bytes(size: int) -> str:
+    """Convert bytes to a human-readable string."""
+    for unit in ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB"):
+        if abs(size) < 1024:
+            return f"{size:.1f} {unit}"
+        size /= 1024
+    return f"{size:.1f} YB"

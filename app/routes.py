@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fro
 from werkzeug.utils import secure_filename
 
 from .config import Config
-from .utils import allowed_file, get_file_path, list_uploaded_files, load_custom_categories, save_custom_categories
+from .utils import allowed_file, format_bytes, get_disk_usage, get_file_path, list_uploaded_files, load_custom_categories, save_custom_categories
 
 upload_bp = Blueprint("upload", __name__)
 
@@ -55,6 +55,7 @@ def index():
         }
 
     version = VERSION_FILE.read_text(encoding="utf-8").strip() if VERSION_FILE.exists() else "unknown"
+    disk = get_disk_usage(Config.UPLOAD_FOLDER)
 
     return render_template(
         "upload.html",
@@ -65,6 +66,8 @@ def index():
         selected_category=selected_category,
         search_query=search_query,
         app_version=version,
+        disk_usage=disk,
+        format_bytes=format_bytes,
     )
 
 
