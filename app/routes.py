@@ -293,6 +293,7 @@ def delete_category(name):
 
 
 def render_error_page(code, title, message):
+    version = VERSION_FILE.read_text(encoding="utf-8").strip() if VERSION_FILE.exists() else "unknown"
     return render_template("error.html", code=code, title=title, message=message), code
 
 

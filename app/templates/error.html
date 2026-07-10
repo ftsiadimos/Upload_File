@@ -1,18 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ code }} - {{ title }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-</head>
-<body>
-  <header class="topbar">
-    <span class="topbar-icon">&#9888;</span>
-    <h1>{{ title }}</h1>
-    <span class="topbar-version">Error {{ code }}</span>
-  </header>
+{% extends "base.html" %}
 
+{% block title %}{{ code }} - {{ title }}{% endblock %}
+
+{% block topbar_icon %}&#9888;{% endblock %}
+
+{% block content %}
   <main class="error-page">
     <section class="error-card">
       <p class="error-code">{{ code }}</p>
@@ -21,5 +13,4 @@
       <a class="btn btn-primary" href="{{ url_for('upload.index') }}">Return home</a>
     </section>
   </main>
-</body>
-</html>
+{% endblock %}

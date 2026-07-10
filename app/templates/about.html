@@ -1,29 +1,23 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About — File Manager</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-</head>
-<body>
+{% extends "base.html" %}
 
-  <header class="topbar">
-    <span class="topbar-icon">&#128193;</span>
-    <h1><a href="{{ url_for('upload.index') }}" style="text-decoration:none; color:inherit;">File Manager</a></h1>
-    <a class="topbar-btn" href="{{ url_for('upload.index') }}">
-      &#8962; Home
-    </a>
+{% block title %}About — File Manager{% endblock %}
 
-    <span class="topbar-version">v{{ app_version }}</span>
-  </header>
+{% block topbar_icon %}&#128193;{% endblock %}
 
+{% block topbar_actions %}
+  <a class="topbar-btn" href="{{ url_for('upload.index') }}">
+    &#8962; Home
+  </a>
+{% endblock %}
+
+{% block content %}
   <div class="page about-page">
 
     <!-- Hero -->
     <div class="about-hero">
       <div class="about-hero-inner">
         <h2>File Manager</h2>
+        <p class="about-version">v{{ app_version }}</p>
         <p class="about-subtitle">A robust file upload system built with Flask, designed for secure and efficient file handling.</p>
         <div class="about-links">
           <a class="about-link-btn" href="https://github.com/ftsiadimos/Upload_File" target="_blank" rel="noopener">
@@ -180,5 +174,4 @@ flask run</code></pre>
     </div>
 
   </div>
-</body>
-</html>
+{% endblock %}

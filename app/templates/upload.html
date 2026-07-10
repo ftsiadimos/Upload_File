@@ -1,25 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>File Manager</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-</head>
-<body>
+{% extends "base.html" %}
 
-  <header class="topbar">
-   
-    <span class="topbar-icon">&#128193;</span>
-    <h1><a href="{{ url_for('upload.index') }}" style="text-decoration:none; color:inherit;">File Manager</a></h1>
-     <a class="topbar-btn" href="{{ url_for('upload.about') }}" style="background:rgba(255,255,255,.15);">
-      &#128203; About
-    </a>
-    <span class="topbar-version">v{{ app_version }}</span>
-  </header>
+{% block title %}File Manager{% endblock %}
 
+{% block topbar_actions %}
+  <a class="topbar-btn" href="{{ url_for('upload.about') }}" style="background:rgba(255,255,255,.15);">
+    &#128203; About
+  </a>
+{% endblock %}
 
-
+{% block content %}
   <div class="page">
 
     {% with messages = get_flashed_messages() %}
@@ -240,6 +229,7 @@
 
   </div><!-- /.page -->
 
+{% block scripts %}
 <script>
   document.querySelectorAll('.flash-close').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -258,5 +248,6 @@
     }
   }
 </style>
-</body>
-</html>
+{% endblock %}
+
+{% endblock %}

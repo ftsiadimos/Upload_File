@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}File Manager{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="topbar-icon">{% block topbar_icon %}&#128193;{% endblock %}</span>
+    <h1><a href="{{ url_for('upload.index') }}" style="text-decoration:none; color:inherit;">File Manager</a></h1>
+    {% block topbar_actions %}{% endblock %}
+  
+  </header>
+
+  {% block content %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>
