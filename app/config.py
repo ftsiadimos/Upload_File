@@ -9,7 +9,7 @@ ALLOWED_EXTENSIONS = {
     "txt", "pdf", "png", "jpg", "jpeg", "gif", "zip", "csv", "xlsx", "docx", "pptx",
     "mp4", "avi", "mkv", "mp3", "wav", "flac", "html", "css", "js", "json", "xml", "yml",
     "yaml", "md", "log", "sql", "py", "java", "c", "cpp", "h", "hpp", "kdbx", "7z", "tar",
-    "gz", "bz2", "xz", "iso", "dmg", "exe", "msi", "apk", "ipa"
+    "gz", "bz2", "xz", "iso", "dmg", "exe", "msi", "apk", "ipa", "jex"
 }
 
 CATEGORIES = [
