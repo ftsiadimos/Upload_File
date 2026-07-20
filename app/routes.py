@@ -320,7 +320,7 @@ def register_error_handlers(app):
 
     @app.errorhandler(413)
     def request_entity_too_large(error):
-        return render_error_page(413, "Payload Too Large", "The uploaded file is too large. Maximum size is 100 MB.")
+        return render_error_page(413, "Payload Too Large", "The uploaded file is too large. Maximum size is 500 MB.")
 
     @app.errorhandler(500)
     def internal_server_error(error):
