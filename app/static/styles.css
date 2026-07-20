@@ -436,6 +436,7 @@ body {
   justify-content: space-between;
   gap: 12px;
 }
+.flash-msg.warning { background: #fef9c3; color: #a16207; border-color: #fde047; }
 .flash-msg.error { background: var(--danger-lt); color: var(--danger); border-color: #fecaca; }
 .flash-close {
   background: none;

@@ -83,7 +83,7 @@ def upload_file():
         return redirect(url_for("upload.index"))
 
     if not allowed_file(file.filename):
-        flash(f"Disallowed file type: {file.filename}")
+        flash(f"Warning: '{file.filename}' has an unsupported file type and was not uploaded. Allowed types: {', '.join(sorted(Config.ALLOWED_EXTENSIONS))}", category="warning")
         return redirect(url_for("upload.index"))
 
     custom_categories = load_custom_categories(Config.UPLOAD_FOLDER)
