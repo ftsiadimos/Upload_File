@@ -1,4 +1,4 @@
-/* ── Variables ─────────────────────────────────────────── */
+/* ── Light theme (default) ─────────────────────────────── */
 :root {
   --bg:        #f8fafc;
   --panel:     #ffffff;
@@ -16,6 +16,42 @@
   --radius:    14px;
 }
 
+/* ── Dark theme ────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:        #0f172a;
+  --panel:     #1e293b;
+  --text:      #e2e8f0;
+  --muted:     #94a3b8;
+  --border:    #334155;
+  --accent:    #60a5fa;
+  --accent-dk: #93c5fd;
+  --success:   #34d399;
+  --success-dk:#6ee7b7;
+  --danger:    #f87171;
+  --danger-lt: #451a1a;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Auto-detect system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0f172a;
+    --panel:     #1e293b;
+    --text:      #e2e8f0;
+    --muted:     #94a3b8;
+    --border:    #334155;
+    --accent:    #60a5fa;
+    --accent-dk: #93c5fd;
+    --success:   #34d399;
+    --success-dk:#6ee7b7;
+    --danger:    #f87171;
+    --danger-lt: #451a1a;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
 /* ── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 body {
@@ -26,6 +62,16 @@ body {
   font-size: 15px;
   line-height: 1.5;
   padding-bottom: 56px;
+  transition: background .25s ease, color .25s ease;
+}
+
+/* Smooth transition for all themed elements */
+.topbar, .card, .sidebar, .about-section, .about-card, .about-feature-card,
+.about-tech-item, .flash-msg, .flash-msg.warning, .flash-msg.error,
+.error-card, table, th, td, .storage-info, .upload-form select,
+.filter-bar select, .category-add-form input[type="text"],
+.filter-bar input[type="text"], .about-hero {
+  transition: background .25s ease, color .25s ease, border-color .25s ease;
 }
 
 /* ── Top header bar ─────────────────────────────────────── */
@@ -55,6 +101,24 @@ body {
   transition: background .15s;
 }
 .topbar-btn:hover { background: rgba(255,255,255,.24); }
+
+/* ── Theme toggle button ───────────────────────────────── */
+.theme-toggle {
+  background: rgba(255,255,255,.15);
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: background .15s, transform .15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-toggle:hover { background: rgba(255,255,255,.24); transform: scale(1.05); }
+.theme-toggle:active { transform: scale(.97); }
 
 /* ── Page wrapper ───────────────────────────────────────── */
 .page { max-width: 1280px; margin: 28px auto; padding: 0 16px 48px; }
@@ -659,4 +723,139 @@ td a:hover { text-decoration: underline; }
   font-size: .9rem;
   font-weight: 600;
   transition: background .15s;
+}
+
+/* ── Dark theme overrides for hardcoded colors ─────────── */
+[data-theme="dark"] .topbar {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+[data-theme="dark"] .files-count {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+[data-theme="dark"] .category-group-header h3 {
+  color: #e2e8f0;
+}
+[data-theme="dark"] th {
+  background: #0f172a;
+}
+[data-theme="dark"] tr:hover td {
+  background: #1e293b;
+}
+[data-theme="dark"] .download-btn {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+[data-theme="dark"] .download-btn:hover {
+  background: #1e4a7f;
+  border-color: #60a5fa;
+}
+[data-theme="dark"] .delete-btn {
+  background: #451a1a;
+  border-color: #991b1b;
+  color: #fca5a5;
+}
+[data-theme="dark"] .delete-btn:hover {
+  background: #7f1d1d;
+  border-color: #ef4444;
+}
+[data-theme="dark"] .change-category-select {
+  background: #1e293b;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .change-category-select:hover {
+  border-color: #60a5fa;
+}
+[data-theme="dark"] .sidebar-nav li a:hover {
+  background: #1e293b;
+  color: #60a5fa;
+}
+[data-theme="dark"] .sidebar-nav li.active a {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+[data-theme="dark"] .sidebar-nav li.active a .sidebar-count {
+  background: #1e4a7f;
+  color: #93c5fd;
+}
+[data-theme="dark"] .storage-info {
+  background: #0f172a;
+}
+[data-theme="dark"] .upload-form input[type="file"] {
+  background: #1e293b;
+  border-color: #3b82f6;
+}
+[data-theme="dark"] .upload-form select,
+[data-theme="dark"] .filter-bar select {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+[data-theme="dark"] .filter-bar input[type="text"],
+[data-theme="dark"] .category-add-form input[type="text"] {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+[data-theme="dark"] .category-add-form input[type="text"]:focus {
+  outline: 2px solid #60a5fa;
+}
+[data-theme="dark"] .category-tag {
+  background: #1e3a5f;
+  border-color: #2563eb;
+  color: #93c5fd;
+}
+[data-theme="dark"] .category-tag-delete:hover {
+  color: #f87171;
+}
+[data-theme="dark"] .about-card,
+[data-theme="dark"] .about-feature-card,
+[data-theme="dark"] .about-tech-item {
+  background: #0f172a;
+}
+[data-theme="dark"] .about-code-header {
+  background: #020617;
+}
+[data-theme="dark"] .about-code-block pre {
+  background: #010409;
+}
+[data-theme="dark"] .about-link-btn {
+  background: rgba(255,255,255,.12);
+}
+[data-theme="dark"] .about-link-btn:hover {
+  background: rgba(255,255,255,.20);
+}
+[data-theme="dark"] .flash-msg {
+  background: #052e16;
+  border-color: #166534;
+  color: #4ade80;
+}
+[data-theme="dark"] .flash-msg.warning {
+  background: #422006;
+  border-color: #854d0e;
+  color: #facc15;
+}
+[data-theme="dark"] .flash-msg.error {
+  background: #450a0a;
+  border-color: #991b1b;
+  color: #fca5a5;
+}
+[data-theme="dark"] .clear-search {
+  color: #94a3b8;
+}
+[data-theme="dark"] .clear-search:hover {
+  color: #f87171;
+}
+[data-theme="dark"] .about-tag {
+  background: #1e3a5f;
+  border-color: #2563eb;
+  color: #93c5fd;
+}
+[data-theme="dark"] .about-section-last a {
+  color: #60a5fa;
+}
+[data-theme="dark"] .about-hero {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
 }

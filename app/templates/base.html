@@ -13,12 +13,36 @@
     <span class="topbar-icon">{% block topbar_icon %}&#128193;{% endblock %}</span>
     <h1><a href="{{ url_for('upload.index') }}" style="text-decoration:none; color:inherit;">File Manager</a></h1>
     {% block topbar_actions %}{% endblock %}
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">&#9790;</button>
   
   </header>
 
   {% block content %}{% endblock %}
 
   {% block scripts %}{% endblock %}
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('themeToggle');
+      var icon = toggle.querySelector ? toggle : toggle;
+
+      function setTheme(dark) {
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        icon.textContent = dark ? '\u2600\uFE0F' : '\u{1F319}';
+      }
+
+      // Initialize: check localStorage, then system preference
+      var saved = localStorage.getItem('theme');
+      var isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(isDark);
+
+      toggle.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        setTheme(current !== 'dark');
+      });
+    })();
+  </script>
 
 </body>
 </html>
