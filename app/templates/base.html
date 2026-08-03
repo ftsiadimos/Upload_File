@@ -32,9 +32,9 @@
         icon.textContent = dark ? '\u2600\uFE0F' : '\u{1F319}';
       }
 
-      // Initialize: check localStorage, then system preference
+      // Initialize: default to light, only use dark if explicitly saved
       var saved = localStorage.getItem('theme');
-      var isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = saved === 'dark';
       setTheme(isDark);
 
       toggle.addEventListener('click', function() {
