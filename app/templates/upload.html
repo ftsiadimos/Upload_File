@@ -173,7 +173,7 @@
       {% else %}
         {% for category, items in grouped_files.items() %}
           {% if items %}
-            <div class="category-group">
+            <div class="category-group" data-category="{{ category }}" data-total="{{ items|length }}">
               <div class="category-group-header">
                 <h3>{{ category }}</h3>
                 <span class="category-count">{{ items|length }}</span>
@@ -191,9 +191,9 @@
                     <th>Uploaded</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="files-tbody">
                   {% for f in items %}
-                    <tr>
+                    <tr class="file-row" data-index="{{ loop.index0 }}">
                       <td><a href="{{ url_for('upload.uploaded_file', filename=f.path) }}" target="_blank" rel="noopener">{{ f.path.split('/')[-1] }}</a></td>
                       <td>
                         <div class="file-actions">
@@ -216,6 +216,7 @@
                   {% endfor %}
                 </tbody>
               </table>
+              <div class="pagination-container" style="display:none;"></div>
             </div>
           {% endif %}
         {% endfor %}
@@ -238,6 +239,106 @@
       setTimeout(() => flashMsg.remove(), 300);
     });
   });
+
+  // Pagination
+  const PER_PAGE = 5;
+
+  function initPagination() {
+    document.querySelectorAll('.category-group').forEach(group => {
+      const total = parseInt(group.dataset.total);
+      if (total <= PER_PAGE) return; // no pagination needed
+
+      const totalPages = Math.ceil(total / PER_PAGE);
+      const tbody = group.querySelector('.files-tbody');
+      const rows = tbody.querySelectorAll('.file-row');
+      const container = group.querySelector('.pagination-container');
+
+      // Hide all rows initially
+      rows.forEach(row => row.style.display = 'none');
+
+      // Show first page
+      for (let i = 0; i < PER_PAGE; i++) {
+        rows[i].style.display = '';
+      }
+
+      // Build pagination controls
+      let html = '<div class="pagination-controls">';
+      html += `<span class="pagination-info">Page 1 of ${totalPages}</span>`;
+      html += `<button class="page-btn page-prev" data-page="1" disabled>&#8592; Prev</button>`;
+
+      for (let p = 1; p <= totalPages; p++) {
+        html += `<button class="page-btn page-num" data-page="${p}" ${p === 1 ? 'class="page-btn page-num active"' : 'class="page-btn page-num"'}>${p}</button>`;
+      }
+
+      html += `<button class="page-btn page-next" data-page="${totalPages}">Next &#8594;</button>`;
+      html += `<button class="page-btn page-all">Show All</button>`;
+      html += '</div>';
+      container.innerHTML = html;
+      container.style.display = 'block';
+
+      // Event listeners
+      container.querySelector('.page-prev').addEventListener('click', function() {
+        const current = parseInt(this.closest('.pagination-controls').querySelector('.page-num.active').dataset.page);
+        if (current > 1) showPage(group, current - 1);
+      });
+
+      container.querySelector('.page-next').addEventListener('click', function() {
+        const current = parseInt(this.closest('.pagination-controls').querySelector('.page-num.active').dataset.page);
+        if (current < totalPages) showPage(group, current + 1);
+      });
+
+      container.querySelectorAll('.page-num').forEach(btn => {
+        btn.addEventListener('click', function() {
+          showPage(group, parseInt(this.dataset.page));
+        });
+      });
+
+      // Show All toggle
+      const allBtn = container.querySelector('.page-all');
+      let showingAll = false;
+      allBtn.addEventListener('click', function() {
+        showingAll = !showingAll;
+        if (showingAll) {
+          showAllRows(group);
+          this.textContent = 'Show Less';
+          controls.querySelector('.pagination-info').textContent = 'Showing all';
+        } else {
+          showPage(group, 1);
+          this.textContent = 'Show All';
+        }
+      });
+    });
+  }
+
+  function showPage(group, page) {
+    const totalPages = Math.ceil(parseInt(group.dataset.total) / PER_PAGE);
+    if (page < 1 || page > totalPages) return;
+
+    const tbody = group.querySelector('.files-tbody');
+    const rows = tbody.querySelectorAll('.file-row');
+    const start = (page - 1) * PER_PAGE;
+    const end = Math.min(start + PER_PAGE, parseInt(group.dataset.total));
+
+    rows.forEach(row => row.style.display = 'none');
+    for (let i = start; i < end; i++) {
+      rows[i].style.display = '';
+    }
+
+    const controls = group.querySelector('.pagination-controls');
+    controls.querySelectorAll('.page-num').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.page) === page);
+    });
+    controls.querySelector('.page-prev').disabled = page === 1;
+    controls.querySelector('.page-next').disabled = page === totalPages;
+    controls.querySelector('.pagination-info').textContent = `Page ${page} of ${totalPages}`;
+  }
+
+  function showAllRows(group) {
+    const rows = group.querySelectorAll('.file-row');
+    rows.forEach(row => row.style.display = '');
+  }
+
+  initPagination();
 </script>
 
 <style>
@@ -246,6 +347,49 @@
       opacity: 0;
       transform: translateY(-4px);
     }
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 0 4px;
+    flex-wrap: wrap;
+  }
+
+  .pagination-info {
+    font-size: 0.85rem;
+    color: var(--muted, #888);
+    margin-right: 8px;
+  }
+
+  .page-btn {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border, #ddd);
+    border-radius: 4px;
+    background: var(--bg-secondary, #f5f5f5);
+    color: var(--text, #333);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background: var(--accent, #4a90d9);
+    color: #fff;
+    border-color: var(--accent, #4a90d9);
+  }
+
+  .page-btn.active {
+    background: var(--accent, #4a90d9);
+    color: #fff;
+    border-color: var(--accent, #4a90d9);
+    font-weight: 600;
+  }
+
+  .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 </style>
 {% endblock %}
