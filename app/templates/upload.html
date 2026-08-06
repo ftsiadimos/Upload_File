@@ -267,7 +267,7 @@
       html += `<button class="page-btn page-prev" data-page="1" disabled>&#8592; Prev</button>`;
 
       for (let p = 1; p <= totalPages; p++) {
-        html += `<button class="page-btn page-num" data-page="${p}" ${p === 1 ? 'class="page-btn page-num active"' : 'class="page-btn page-num"'}>${p}</button>`;
+        html += `<button class="page-btn page-num${p === 1 ? ' active' : ''}" data-page="${p}">${p}</button>`;
       }
 
       html += `<button class="page-btn page-next" data-page="${totalPages}">Next &#8594;</button>`;
