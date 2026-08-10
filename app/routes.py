@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fro
 from math import ceil
 from werkzeug.utils import secure_filename
 
-from .config import Config
+from .config import Config, save_settings, reset_settings
 from .utils import allowed_file, format_bytes, get_disk_usage, get_file_path, list_uploaded_files, load_custom_categories, save_custom_categories
 
 upload_bp = Blueprint("upload", __name__)
@@ -69,6 +69,7 @@ def index():
         app_version=version,
         disk_usage=disk,
         format_bytes=format_bytes,
+        per_page=Config.PAGINATION_PER_CATEGORY,
     )
 
 
@@ -291,6 +292,96 @@ def delete_category(name):
 
     flash(f"Category deleted: {safe_name}")
     return redirect(url_for("upload.index"))
+
+
+@upload_bp.route("/settings", methods=["GET"])
+def settings_page():
+    """Render the settings page with current configuration."""
+    return render_template(
+        "settings.html",
+        upload_folder=Config.UPLOAD_FOLDER,
+        max_content_length=Config.MAX_CONTENT_LENGTH,
+        allowed_extensions=sorted(Config.ALLOWED_EXTENSIONS),
+        categories=Config.CATEGORIES,
+        pagination=Config.PAGINATION_PER_CATEGORY,
+    )
+
+
+@upload_bp.route("/settings/save", methods=["POST"])
+def settings_save():
+    """Save updated settings."""
+    upload_folder = request.form.get("upload_folder", "").strip()
+    max_content_length_str = request.form.get("max_content_length", "").strip()
+    allowed_extensions = request.form.get("allowed_extensions", "").strip()
+    categories = request.form.get("categories", "").strip()
+    pagination_str = request.form.get("pagination", "").strip()
+
+    # Validate upload folder
+    if not upload_folder:
+        flash("Upload folder cannot be empty.", "error")
+        return redirect(url_for("upload.settings_page"))
+
+    # Validate max content length
+    try:
+        max_content_length = int(max_content_length_str) if max_content_length_str else Config.MAX_CONTENT_LENGTH
+        if max_content_length < 1024:
+            flash("Maximum content length must be at least 1024 bytes.", "error")
+            return redirect(url_for("upload.settings_page"))
+    except ValueError:
+        flash("Invalid maximum content length value.", "error")
+        return redirect(url_for("upload.settings_page"))
+
+    # Parse allowed extensions
+    if allowed_extensions:
+        ext_set = {ext.strip().lower() for ext in allowed_extensions.split(",") if ext.strip()}
+    else:
+        ext_set = set()
+
+    if not ext_set:
+        flash("At least one allowed file extension is required.", "error")
+        return redirect(url_for("upload.settings_page"))
+
+    # Parse categories
+    if categories:
+        cat_list = [cat.strip() for cat in categories.split(",") if cat.strip()]
+    else:
+        cat_list = Config.CATEGORIES
+
+    # Validate pagination
+    try:
+        pagination = int(pagination_str) if pagination_str else Config.PAGINATION_PER_CATEGORY
+        if pagination < 1:
+            flash("Pagination must be at least 1.", "error")
+            return redirect(url_for("upload.settings_page"))
+    except ValueError:
+        flash("Invalid pagination value.", "error")
+        return redirect(url_for("upload.settings_page"))
+
+    # Save settings
+    save_settings({
+        "UPLOAD_FOLDER": upload_folder,
+        "MAX_CONTENT_LENGTH": max_content_length,
+        "ALLOWED_EXTENSIONS": ext_set,
+        "CATEGORIES": cat_list,
+        "PAGINATION_PER_CATEGORY": pagination,
+    })
+
+    flash("Settings saved successfully. Changes will take effect after restart.", "success")
+    return redirect(url_for("upload.settings_page"))
+
+
+@upload_bp.route("/settings/reset", methods=["POST"])
+def settings_reset():
+    """Reset settings to defaults."""
+    reset_settings()
+    Config._settings = Config._load_settings()
+    Config.UPLOAD_FOLDER = Config._settings["UPLOAD_FOLDER"]
+    Config.MAX_CONTENT_LENGTH = Config._settings["MAX_CONTENT_LENGTH"]
+    Config.ALLOWED_EXTENSIONS = Config._settings["ALLOWED_EXTENSIONS"]
+    Config.CATEGORIES = Config._settings["CATEGORIES"]
+    Config.PAGINATION_PER_CATEGORY = Config._settings["PAGINATION_PER_CATEGORY"]
+    flash("Settings reset to defaults.", "success")
+    return redirect(url_for("upload.settings_page"))
 
 
 def render_error_page(code, title, message):

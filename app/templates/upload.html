@@ -3,6 +3,9 @@
 {% block title %}File Manager{% endblock %}
 
 {% block topbar_actions %}
+  <a class="topbar-btn" href="{{ url_for('upload.settings_page') }}" style="background:rgba(255,255,255,.15);">
+    &#9881; Settings
+  </a>
   <a class="topbar-btn" href="{{ url_for('upload.about') }}" style="background:rgba(255,255,255,.15);">
     &#128203; About
   </a>
@@ -216,7 +219,7 @@
                   {% endfor %}
                 </tbody>
               </table>
-              <div class="pagination-container" style="display:none;"></div>
+              <div class="pagination-container"></div>
             </div>
           {% endif %}
         {% endfor %}
@@ -240,8 +243,8 @@
     });
   });
 
-  // Pagination
-  const PER_PAGE = 5;
+  // Pagination - reads per_page from settings
+  const PER_PAGE = {{ per_page }};
 
   function initPagination() {
     document.querySelectorAll('.category-group').forEach(group => {

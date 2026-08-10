@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - File Manager{% endblock %}
+
+{% block content %}
+  <div class="page">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-list">
+          {% for category, msg in messages %}
+            <div class="flash-msg {{ category }}">
+              <span>{{ msg }}</span>
+              <button class="flash-close" aria-label="Close message">&#xd7;</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="settings-container">
+      <div class="settings-header">
+        <h2>&#9881; Settings</h2>
+        <p class="settings-subtitle">Configure your File Manager preferences. Changes are saved to <code>app/settings.json</code> and take effect after restart.</p>
+      </div>
+
+      <form method="POST" action="{{ url_for('upload.settings_save') }}" class="settings-form">
+
+        <!-- Upload Folder -->
+        <div class="settings-card">
+          <h3>&#128193; Upload Folder</h3>
+          <div class="form-group">
+            <label for="upload_folder">Upload Directory Path</label>
+            <input type="text" id="upload_folder" name="upload_folder" value="{{ upload_folder }}" class="form-input" placeholder="/path/to/uploads" />
+            <span class="form-hint">Absolute path where uploaded files will be stored.</span>
+          </div>
+        </div>
+
+        <!-- Max Content Length -->
+        <div class="settings-card">
+          <h3>&#128190; Upload Limits</h3>
+          <div class="form-group">
+            <label for="max_content_length">Maximum Upload Size (bytes)</label>
+            <input type="number" id="max_content_length" name="max_content_length" value="{{ max_content_length }}" class="form-input form-input-sm" placeholder="524288000" />
+            <span class="form-hint">Maximum file size in bytes. Current: {{ max_content_length | int / (1024*1024) | round(0) }} MB</span>
+          </div>
+        </div>
+
+        <!-- Allowed Extensions -->
+        <div class="settings-card">
+          <h3>&#128452; Allowed File Extensions</h3>
+          <div class="form-group">
+            <label for="allowed_extensions">Comma-separated Extensions</label>
+            <textarea id="allowed_extensions" name="allowed_extensions" class="form-textarea" rows="4" placeholder="txt, pdf, png, jpg, zip, ...">{{ allowed_extensions | join(', ') }}</textarea>
+            <span class="form-hint">List of allowed file extensions separated by commas (without dots).</span>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="settings-card">
+          <h3>&#128193; Categories</h3>
+          <div class="form-group">
+            <label for="categories">Comma-separated Categories</label>
+            <textarea id="categories" name="categories" class="form-textarea" rows="4" placeholder="Documents, Images, Video, ...">{{ categories | join(', ') }}</textarea>
+            <span class="form-hint">List of categories separated by commas. These will appear in the sidebar.</span>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="settings-card">
+          <h3>&#128203; Pagination</h3>
+          <div class="form-group">
+            <label for="pagination">Files Per Category</label>
+            <input type="number" id="pagination" name="pagination" value="{{ pagination }}" class="form-input form-input-sm" placeholder="5" min="1" />
+            <span class="form-hint">Number of files displayed per category (reserved for future use).</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="settings-actions">
+          <button type="submit" class="btn btn-primary">&#128190; Save Settings</button>
+          <form method="POST" action="{{ url_for('upload.settings_reset') }}" style="display:inline;" onsubmit="return confirm('Reset all settings to defaults?')">
+            <button type="submit" class="btn btn-danger">&#128465; Reset to Defaults</button>
+          </form>
+          <a href="{{ url_for('upload.index') }}" class="btn btn-secondary">&#8617; Back to Files</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -848,6 +848,146 @@ td a:hover { text-decoration: underline; }
 [data-theme="dark"] .clear-search:hover {
   color: #f87171;
 }
+
+/* ── Settings page ─────────────────────────────────────── */
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.settings-header {
+  margin-bottom: 28px;
+}
+.settings-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.settings-subtitle {
+  font-size: .92rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+}
+.settings-subtitle code {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: .85rem;
+}
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.settings-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+.settings-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--text);
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group:last-child {
+  margin-bottom: 0;
+}
+.form-group label {
+  display: block;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: .92rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.form-input-sm {
+  max-width: 300px;
+}
+.form-textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: .92rem;
+  font-family: "Segoe UI", system-ui, monospace;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+  transition: border-color .15s, box-shadow .15s;
+}
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.form-hint {
+  display: block;
+  font-size: .82rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+}
+.settings-actions .btn {
+  padding: 12px 20px;
+  font-size: .95rem;
+}
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-danger:hover {
+  background: var(--success-dk);
+}
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+  white-space: nowrap;
+  border: none;
+}
+.btn-secondary:hover {
+  background: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+/* ── Dark theme overrides for hardcoded colors ─────────── */
 [data-theme="dark"] .btn-secondary {
   background: #334155;
   color: #e2e8f0;
