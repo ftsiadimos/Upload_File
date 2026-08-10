@@ -58,6 +58,33 @@ docker pull ghcr.io/ftsiadimos/upload_file:latest
 
 ## Configuration
 
+### Settings File (`app/settings.json`)
+
+The application uses a JSON settings file for runtime configuration. All available settings:
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `UPLOAD_FOLDER` | string | `./uploads` | Directory path where uploaded files are stored |
+| `MAX_CONTENT_LENGTH` | int | `524288000` (500 MB) | Maximum upload file size in bytes |
+| `ALLOWED_EXTENSIONS` | array | See list below | Allowed file extensions for upload |
+| `CATEGORIES` | array | See list below | File categories for organization |
+| `PAGINATION_PER_CATEGORY` | int | `3` | Number of files displayed per category page |
+
+#### Default Allowed Extensions
+
+```
+7z, apk, avi, bz2, c, cpp, css, csv, dmg, docx, exe, flac, gif, gz, h,
+hpp, html, ipa, iso, java, jex, jpeg, jpg, js, json, kdbx, log, md, mkv,
+mp3, mp4, msi, pdf, png, pptx, py, sql, tar, txt, wav, xlsx, xml, xz,
+yaml, yml, zip
+```
+
+#### Default Categories
+
+```
+Documents, Images, Audio, Video, Archives, Others
+```
+
 ### Environment Variables
 
 Configure the application using environment variables in your `.env` file:
@@ -66,16 +93,14 @@ Configure the application using environment variables in your `.env` file:
 # Flask Configuration
 FLASK_APP=main.py
 FLASK_ENV=development
-
-# Allowed file extensions
-ALLOWED_EXTENSIONS=pdf,docx,xlsx,png,jpg,jpeg,gif,zip,tar
+FLASK_SECRET_KEY=your-secret-key-here
 
 # Upload settings
 UPLOAD_FOLDER=./uploads
-MAX_CONTENT_LENGTH=16MB
+MAX_CONTENT_LENGTH=524288000
 ```
 
-### Docker Configuration
+> **Note:** Environment variables take precedence over `settings.json` values where applicable. The `ALLOWED_EXTENSIONS`, `CATEGORIES`, and `PAGINATION_PER_CATEGORY` settings are managed exclusively through `app/settings.json`.
 
 The application uses Docker Compose for container management. Key components:
 
@@ -114,13 +139,9 @@ After starting the containers:
 
 ## Allowed File Extensions
 
-The application restricts uploads to specific file types for security. Currently allowed extensions:
+The application restricts uploads to specific file types for security. Extensions are configured in `app/settings.json` under `ALLOWED_EXTENSIONS`.
 
-```
-pdf, docx, xlsx, png, jpg, jpeg, gif, zip, tar
-```
-
-To change allowed extensions, modify the `ALLOWED_EXTENSIONS` environment variable.
+To change allowed extensions, edit `app/settings.json` and update the `ALLOWED_EXTENSIONS` array.
 
 ## File Size Limits
 
