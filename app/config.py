@@ -69,7 +69,10 @@ class Config:
     _settings = _load_settings()
 
     SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "replace-this-with-a-secure-key")
-    UPLOAD_FOLDER = _settings["UPLOAD_FOLDER"]
+    _saved_upload_folder = _settings["UPLOAD_FOLDER"]
+    # If the saved path doesn't exist (e.g., Docker container with a different mount),
+    # fall back to the default relative path so the app can create it.
+    UPLOAD_FOLDER = _saved_upload_folder if Path(_saved_upload_folder).exists() else BASE_DIR.parent / "uploads"
     MAX_CONTENT_LENGTH = _settings["MAX_CONTENT_LENGTH"]
     ALLOWED_EXTENSIONS = _settings["ALLOWED_EXTENSIONS"]
     CATEGORIES = _settings["CATEGORIES"]
